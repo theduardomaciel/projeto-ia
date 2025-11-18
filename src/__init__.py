@@ -7,3 +7,5 @@ Analisador de currículos com IA para recrutamento de desenvolvedores.
 
 __version__ = "0.1.0"
 __author__ = "Eduardo Maciel, Josenilton Ferreira, Lucas Cassiano, Maria Letícia"
+
+# Permite execução do módulo CLI com `python -m src.ui.main`

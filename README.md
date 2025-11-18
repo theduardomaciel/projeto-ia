@@ -96,7 +96,7 @@ data/
 ### 2. Rodar o analisador
 
 ```bash
-python src/main.py \
+python -m src.ui.main \
   --job data/samples/job.txt \
   --cvs data/samples/
 ```

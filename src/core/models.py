@@ -53,6 +53,7 @@ class Candidate:
 
     name: str
     raw_text: str  # Texto original do currículo
+    normalized_text: Optional[str] = None  # Texto normalizado para processamento
 
     # Informações extraídas
     contact: Optional[str] = None
