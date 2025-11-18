@@ -39,7 +39,7 @@ def _compile_pattern(term: str) -> re.Pattern:
 class SkillMatch:
     canonical: str
     category: str  # 'hard' | 'soft'
-    source: str    # 'dictionary' | 'synonym'
+    source: str  # 'dictionary' | 'synonym'
     count: int
 
 
@@ -50,7 +50,9 @@ class SkillExtractor:
         self._alias_map = self._build_alias_map()
         self._patterns = self._build_patterns()
         # arquivo de log de extração
-        self._log_file = Path(__file__).resolve().parents[2] / "logs" / "skill_events.log"
+        self._log_file = (
+            Path(__file__).resolve().parents[2] / "logs" / "skill_events.log"
+        )
 
     def _build_canonical_sets(self) -> Tuple[Dict[str, str], Dict[str, str]]:
         hard = {}
@@ -74,7 +76,9 @@ class SkillExtractor:
             for a in alist:
                 alias_map[a.lower()] = canon
         # também mapeia cada skill canônica para si mesma
-        for canon in list(self._hard_by_canonical.keys()) + list(self._soft_by_canonical.keys()):
+        for canon in list(self._hard_by_canonical.keys()) + list(
+            self._soft_by_canonical.keys()
+        ):
             alias_map.setdefault(canon, canon)
         return alias_map
 
@@ -93,9 +97,9 @@ class SkillExtractor:
                 continue
             canonical = self._alias_map[alias]
             category = (
-                "hard" if canonical in self._hard_by_canonical else "soft"
-                if canonical in self._soft_by_canonical
-                else None
+                "hard"
+                if canonical in self._hard_by_canonical
+                else "soft" if canonical in self._soft_by_canonical else None
             )
             if not category:
                 continue
@@ -110,7 +114,12 @@ class SkillExtractor:
         for m in matches.values():
             confidence = 0.9 if m.source == "dictionary" else 0.85
             skills.append(
-                Skill(name=m.canonical, category=m.category, confidence=confidence, source=m.source)
+                Skill(
+                    name=m.canonical,
+                    category=m.category,
+                    confidence=confidence,
+                    source=m.source,
+                )
             )
         return skills
 

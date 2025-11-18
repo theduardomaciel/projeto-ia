@@ -12,6 +12,8 @@ from src.core.models import Candidate, JobProfile
 from .loader import ParserService
 
 
-def parse_all(job_path: str | Path, cvs_dir: str | Path) -> Tuple[JobProfile, List[Candidate]]:
+def parse_all(
+    job_path: str | Path, cvs_dir: str | Path
+) -> Tuple[JobProfile, List[Candidate]]:
     service = ParserService()
     return service.parse(job_path, cvs_dir)

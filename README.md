@@ -95,28 +95,45 @@ data/
 
 ### 2. Rodar o analisador
 
+**Apenas parsing (visualizar currículos carregados):**
 ```bash
-python -m src.ui.main \
-  --job data/samples/job.txt \
-  --cvs data/samples/
+python -m src.ui.main --job data/samples/job.txt --cvs data/samples/
 ```
 
-### 3. Exemplo de saída (resumo)
+**Com extração de skills:**
+```bash
+python -m src.ui.main --job data/samples/job.txt --cvs data/samples/ --extract
+```
+
+**Com ranking completo:**
+```bash
+python -m src.ui.main --job data/samples/job.txt --cvs data/samples/ --rank
+```
+
+**Pipeline completo (extração + ranking):**
+```bash
+python -m src.ui.main --job data/samples/job.txt --cvs data/samples/ --extract --rank
+```
+
+### 3. Exemplo de saída (ranking)
 
 ```
-Ranking de Candidatos
-----------------------
+============================================================
+RANKING DE CANDIDATOS
+============================================================
 
-1º João Silva (82 pts)
-   Hard skills: Python, SQL, APIs REST
-   Soft skills: Comunicação clara, Adaptabilidade
-   Justificativa: O candidato demonstra...
+1º lugar: Maria Santos — 4.5 pontos
+   Arquivo: curriculo_02.txt
+   Hard skills: 3.4 pts
+   Soft skills: 1.1 pts
+   Experiência: 0.0 pts
+   Educação: 0.0 pts
+   Principais skills: python (9.0), rest api (7.7), postgresql (7.2)
 
-2º Maria Santos (78 pts)
-   Hard skills: Java, Spring, Docker
-   Justificativa: ...
-
-3º Pedro Costa (64 pts)
+2º lugar: João Silva — 4.4 pontos
+   Arquivo: curriculo_01.txt
+   Hard skills: 3.5 pts
+   Soft skills: 0.9 pts
    ...
 ```
 

@@ -83,7 +83,9 @@ class FileLoader:
         lines = [l.strip() for l in raw.splitlines() if l.strip()]
         title = lines[0][:120] if lines else "Vaga"
         description = raw
-        job = JobProfile(title=title, description=description, raw_text=raw, file_path=str(path))
+        job = JobProfile(
+            title=title, description=description, raw_text=raw, file_path=str(path)
+        )
         _log("job_loaded", f"title={title}")
         return job
 
@@ -110,7 +112,9 @@ class FileLoader:
 
 
 class TextNormalizer:
-    def __init__(self, lower: bool = True, remove_acc: bool = True, collapse_ws: bool = True) -> None:
+    def __init__(
+        self, lower: bool = True, remove_acc: bool = True, collapse_ws: bool = True
+    ) -> None:
         self.lower = lower
         self.remove_acc = remove_acc
         self.collapse_ws = collapse_ws
@@ -127,7 +131,9 @@ class TextNormalizer:
 
 
 class ParserService:
-    def __init__(self, loader: FileLoader | None = None, normalizer: TextNormalizer | None = None) -> None:
+    def __init__(
+        self, loader: FileLoader | None = None, normalizer: TextNormalizer | None = None
+    ) -> None:
         self.loader = loader or FileLoader()
         self.normalizer = normalizer or TextNormalizer()
 
