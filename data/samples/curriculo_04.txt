@@ -1,0 +1,66 @@
+Ana Paula Oliveira
+anapaulaoliveira@email.com | (82) 99654-3210
+LinkedIn: linkedin.com/in/anapaulaoliveira
+
+PERFIL PROFISSIONAL
+Desenvolvedora Python especializada em automação, web scraping e análise de dados. 4 anos de experiência com Python, buscando transição para desenvolvimento backend e APIs.
+
+TRAJETÓRIA PROFISSIONAL
+
+Analista de Automação Python | DataMining Corp | Mar/2021 - Presente
+- Desenvolvimento de scripts de automação com Python
+- Web scraping com BeautifulSoup e Scrapy
+- Manipulação de dados com Pandas e NumPy
+- Criação de dashboards com Streamlit
+- ETL de grandes volumes de dados
+- Integração com APIs REST de terceiros
+- PostgreSQL e MySQL para armazenamento
+- Git para versionamento
+
+Analista de Dados Jr | Consulting Group | Jan/2020 - Fev/2021
+- Análise exploratória de dados
+- Python para processamento de dados
+- SQL para queries complexas
+- Visualização com Matplotlib e Seaborn
+- Relatórios automatizados
+
+FORMAÇÃO ACADÊMICA
+
+Bacharelado em Estatística
+UFAL | 2015 - 2019
+
+Pós-graduação em Ciência de Dados (em andamento)
+UFPE | 2024 - 2025
+
+STACK TÉCNICA
+
+Linguagens: Python (avançado), SQL (avançado), R (intermediário)
+Bibliotecas Python: Pandas, NumPy, Requests, BeautifulSoup, Scrapy
+Web: Streamlit, Flask (básico), HTML/CSS (básico)
+Bancos de Dados: PostgreSQL, MySQL, SQLite
+Ferramentas: Git, Jupyter, VS Code, Docker (conhecimento teórico)
+Cloud: AWS S3, básico de Lambda
+
+COMPETÊNCIAS COMPORTAMENTAIS
+- Excelente capacidade analítica
+- Atenção aos detalhes
+- Comunicação clara de insights técnicos
+- Trabalho colaborativo
+- Autodidata e curiosa
+- Organização e gestão de tempo
+
+PROJETOS RELEVANTES
+- Sistema de monitoramento de preços (scraping + banco de dados + alertas)
+- Pipeline ETL para consolidação de dados de múltiplas fontes
+- API simples com Flask para servir dados processados
+
+CERTIFICAÇÕES
+- Python for Data Science (IBM - 2022)
+- SQL for Data Analysis (DataCamp - 2021)
+
+IDIOMAS
+- Português: Nativo
+- Inglês: Intermediário avançado (leitura técnica fluente)
+
+OBSERVAÇÕES
+Tenho forte interesse em me especializar em desenvolvimento backend. Já possuo base sólida em Python, bancos de dados e lógica de programação. Busco oportunidade para aplicar e expandir conhecimentos em APIs REST, frameworks web e arquitetura de software.

@@ -1,0 +1,68 @@
+{
+    "category_weights": {
+        "hard_skills": 0.6,
+        "soft_skills": 0.2,
+        "experience": 0.15,
+        "education": 0.05
+    },
+    "requirement_importance": {
+        "required": 1.0,
+        "preferred": 0.6,
+        "nice_to_have": 0.3
+    },
+    "skill_weights": {
+        "python": 10,
+        "fastapi": 8,
+        "django": 8,
+        "flask": 7,
+        "rest api": 9,
+        "api": 9,
+        "postgresql": 8,
+        "mysql": 7,
+        "sql": 7,
+        "mongodb": 6,
+        "redis": 6,
+        "docker": 8,
+        "kubernetes": 7,
+        "git": 7,
+        "github": 6,
+        "aws": 7,
+        "gcp": 6,
+        "azure": 6,
+        "pytest": 7,
+        "unittest": 6,
+        "microservices": 7,
+        "microsserviços": 7,
+        "ci/cd": 7,
+        "github actions": 6,
+        "rabbitmq": 6,
+        "kafka": 6,
+        "graphql": 5,
+        "oauth": 5,
+        "jwt": 5,
+        "comunicação": 6,
+        "trabalho em equipe": 6,
+        "proatividade": 5,
+        "resolução de problemas": 6,
+        "adaptabilidade": 5,
+        "liderança": 5,
+        "autonomia": 5
+    },
+    "experience_years_weight": {
+        "0-1": 0.3,
+        "1-2": 0.5,
+        "2-3": 0.7,
+        "3-5": 0.9,
+        "5+": 1.0
+    },
+    "education_weight": {
+        "phd": 1.0,
+        "mestrado": 0.9,
+        "master": 0.9,
+        "bacharelado": 0.8,
+        "graduação": 0.8,
+        "tecnólogo": 0.7,
+        "técnico": 0.5,
+        "cursando": 0.6
+    }
+}

@@ -1,0 +1,261 @@
+{
+    "hard_skills": {
+        "languages": [
+            "python",
+            "java",
+            "javascript",
+            "typescript",
+            "sql",
+            "html",
+            "css",
+            "go",
+            "rust",
+            "php",
+            "ruby",
+            "c++",
+            "c#",
+            "kotlin",
+            "swift"
+        ],
+        "frameworks": [
+            "fastapi",
+            "django",
+            "flask",
+            "spring",
+            "spring boot",
+            "express",
+            "nestjs",
+            "react",
+            "vue",
+            "angular",
+            "laravel",
+            "rails"
+        ],
+        "databases": [
+            "postgresql",
+            "mysql",
+            "mongodb",
+            "redis",
+            "oracle",
+            "sql server",
+            "dynamodb",
+            "cassandra",
+            "elasticsearch",
+            "sqlite"
+        ],
+        "devops": [
+            "docker",
+            "kubernetes",
+            "jenkins",
+            "github actions",
+            "gitlab ci",
+            "terraform",
+            "ansible",
+            "ci/cd",
+            "nginx",
+            "apache"
+        ],
+        "cloud": [
+            "aws",
+            "azure",
+            "gcp",
+            "google cloud",
+            "heroku",
+            "digitalocean",
+            "ec2",
+            "s3",
+            "lambda",
+            "rds",
+            "cloudformation"
+        ],
+        "messaging": [
+            "rabbitmq",
+            "kafka",
+            "redis",
+            "celery",
+            "sqs",
+            "sns"
+        ],
+        "testing": [
+            "pytest",
+            "unittest",
+            "jest",
+            "mocha",
+            "junit",
+            "selenium",
+            "cypress",
+            "postman"
+        ],
+        "tools": [
+            "git",
+            "github",
+            "gitlab",
+            "bitbucket",
+            "jira",
+            "confluence",
+            "swagger",
+            "postman",
+            "vscode",
+            "intellij"
+        ],
+        "concepts": [
+            "rest api",
+            "restful",
+            "graphql",
+            "microservices",
+            "microsserviços",
+            "api",
+            "websocket",
+            "oauth",
+            "jwt",
+            "agile",
+            "scrum",
+            "kanban",
+            "tdd",
+            "bdd",
+            "solid",
+            "design patterns",
+            "clean code",
+            "etl"
+        ],
+        "data_science": [
+            "pandas",
+            "numpy",
+            "scikit-learn",
+            "tensorflow",
+            "pytorch",
+            "matplotlib",
+            "seaborn",
+            "jupyter",
+            "web scraping",
+            "scrapy",
+            "beautifulsoup"
+        ]
+    },
+    "soft_skills": {
+        "communication": [
+            "comunicação",
+            "comunicação clara",
+            "comunicação eficaz",
+            "comunicação assertiva",
+            "apresentação",
+            "oratória"
+        ],
+        "teamwork": [
+            "trabalho em equipe",
+            "colaboração",
+            "colaborativo",
+            "cooperação",
+            "espírito de equipe"
+        ],
+        "leadership": [
+            "liderança",
+            "gestão de equipe",
+            "mentoria",
+            "coordenação",
+            "influência"
+        ],
+        "problem_solving": [
+            "resolução de problemas",
+            "capacidade analítica",
+            "pensamento analítico",
+            "análise crítica",
+            "raciocínio lógico"
+        ],
+        "adaptability": [
+            "adaptabilidade",
+            "flexibilidade",
+            "resiliência",
+            "gestão de mudanças"
+        ],
+        "proactivity": [
+            "proatividade",
+            "proativo",
+            "iniciativa",
+            "autonomia",
+            "autogerenciamento"
+        ],
+        "creativity": [
+            "criatividade",
+            "inovação",
+            "pensamento criativo",
+            "solução criativa"
+        ],
+        "organization": [
+            "organização",
+            "gestão de tempo",
+            "planejamento",
+            "priorização",
+            "atenção aos detalhes"
+        ],
+        "learning": [
+            "aprendizado rápido",
+            "autodidata",
+            "curiosidade",
+            "desenvolvimento contínuo",
+            "vontade de aprender"
+        ],
+        "empathy": [
+            "empatia",
+            "inteligência emocional",
+            "escuta ativa",
+            "compreensão"
+        ]
+    },
+    "synonyms": {
+        "python": [
+            "py",
+            "python3"
+        ],
+        "javascript": [
+            "js",
+            "ecmascript"
+        ],
+        "postgresql": [
+            "postgres",
+            "psql"
+        ],
+        "mongodb": [
+            "mongo"
+        ],
+        "docker": [
+            "containers",
+            "containerização"
+        ],
+        "kubernetes": [
+            "k8s"
+        ],
+        "aws": [
+            "amazon web services"
+        ],
+        "gcp": [
+            "google cloud platform"
+        ],
+        "rest api": [
+            "rest",
+            "restful api",
+            "api rest"
+        ],
+        "microservices": [
+            "microsserviços",
+            "arquitetura de microsserviços"
+        ],
+        "ci/cd": [
+            "continuous integration",
+            "continuous deployment",
+            "integração contínua"
+        ],
+        "github actions": [
+            "gh actions"
+        ],
+        "fastapi": [
+            "fast api"
+        ],
+        "django": [
+            "django framework"
+        ],
+        "pytest": [
+            "py.test"
+        ]
+    }
+}

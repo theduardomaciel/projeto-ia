@@ -1,0 +1,44 @@
+Desenvolvedor Backend Python - Pleno/Sênior
+
+Descrição da Vaga:
+Buscamos um desenvolvedor backend experiente para integrar nosso time de engenharia. O profissional será responsável por desenvolver e manter APIs RESTful de alta performance, trabalhar com bancos de dados relacionais e não-relacionais, e colaborar com times multidisciplinares em um ambiente ágil.
+
+Requisitos Obrigatórios:
+- Experiência sólida com Python (mínimo 3 anos)
+- Desenvolvimento de APIs REST
+- Conhecimento em SQL e bancos de dados relacionais (PostgreSQL, MySQL)
+- Versionamento com Git
+- Experiência com testes automatizados (unittest, pytest)
+- Conhecimento em Docker e containerização
+
+Requisitos Desejáveis:
+- Experiência com frameworks web (FastAPI, Django, Flask)
+- Conhecimento em MongoDB ou outros bancos NoSQL
+- Experiência com Redis para cache
+- Conhecimento em arquitetura de microsserviços
+- CI/CD (GitHub Actions, GitLab CI, Jenkins)
+- Cloud providers (AWS, GCP, Azure)
+- Mensageria (RabbitMQ, Kafka)
+
+Soft Skills Valorizadas:
+- Comunicação clara e objetiva
+- Trabalho em equipe e colaboração
+- Proatividade e autonomia
+- Capacidade analítica e resolução de problemas
+- Adaptabilidade a mudanças
+- Documentação e compartilhamento de conhecimento
+
+Diferenciais:
+- Contribuições open source
+- Conhecimento em GraphQL
+- Experiência com Kubernetes
+- Conhecimento em segurança de aplicações
+- Inglês técnico para leitura de documentação
+
+Oferecemos:
+- Trabalho remoto
+- Horário flexível
+- Plano de saúde e odontológico
+- Vale alimentação/refeição
+- Ambiente colaborativo e desafiador
+- Investimento em capacitação e cursos

@@ -1,0 +1,55 @@
+Pedro Costa
+pedro.costa.dev@email.com
+Tel: (82) 98123-4567
+
+OBJETIVO
+Desenvolvedor Java buscando migração para Python backend
+
+EXPERIÊNCIA PROFISSIONAL
+
+Desenvolvedor Java | SoftwareHouse | 2020 - Atual
+- Desenvolvimento de aplicações web com Spring Boot
+- APIs REST e SOAP
+- Oracle Database e MySQL
+- Maven e Git
+- Testes com JUnit
+- Deploy em servidores Tomcat
+
+Estagiário de Programação | EmpresaTI | 2019 - 2020
+- Suporte a sistemas legados
+- Correção de bugs em Java
+- Documentação técnica
+
+FORMAÇÃO
+
+Bacharelado em Sistemas de Informação
+UFAL | 2016 - 2020
+
+CONHECIMENTOS TÉCNICOS
+
+Forte em:
+- Java (5 anos)
+- Spring Framework
+- SQL (Oracle, MySQL, PostgreSQL)
+- Git e GitHub
+- REST APIs
+
+Conhecimento básico:
+- Python (estudando atualmente)
+- Django (curso online)
+- Docker (teoria)
+- JavaScript
+
+QUALIDADES PESSOAIS
+- Responsável e comprometido
+- Pontual
+- Trabalho bem sob pressão
+- Aprendo rápido
+- Gosto de desafios
+
+CURSOS RECENTES
+- Python Básico ao Avançado (cursando)
+- Docker para Desenvolvedores (cursando)
+
+IDIOMAS
+Inglês básico

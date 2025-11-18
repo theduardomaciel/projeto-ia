@@ -1,0 +1,53 @@
+Maria Santos
+maria.santos@email.com | (82) 99876-5432
+Portfolio: mariacodes.dev | GitHub: github.com/mariasantos
+
+SOBRE MIM
+Desenvolvedora fullstack com foco em backend. 2 anos de experiência com Python e desenvolvimento de APIs. Busco sempre aprender novas tecnologias e compartilhar conhecimento com a comunidade.
+
+EXPERIÊNCIA
+
+Desenvolvedora Backend | WebSolutions | Ago/2023 - Atual
+- Desenvolvimento de APIs REST com Django REST Framework
+- Trabalho com PostgreSQL e queries SQL otimizadas
+- Uso de Docker para ambientes de desenvolvimento
+- Participação ativa em code reviews
+- Implementação de autenticação JWT
+- Documentação de APIs com Swagger
+
+Desenvolvedora Junior Fullstack | AgenciaDigital | Jan/2022 - Jul/2023
+- Desenvolvimento backend com Python/Django
+- Frontend com React (básico)
+- MySQL como banco de dados principal
+- Git para versionamento
+- Metodologia Scrum
+- Trabalho em equipe com designers e outros devs
+
+FORMAÇÃO
+
+Tecnólogo em Análise e Desenvolvimento de Sistemas
+Instituto Federal de Alagoas (IFAL) | 2019 - 2022
+
+COMPETÊNCIAS TÉCNICAS
+
+Linguagens: Python, SQL, HTML/CSS, JavaScript (básico)
+Frameworks: Django, Django REST Framework, Flask (conhecimento básico)
+Banco de Dados: PostgreSQL, MySQL
+Ferramentas: Git, Docker, VS Code, Postman
+Cloud: Experiência básica com AWS (EC2, S3)
+
+HABILIDADES COMPORTAMENTAIS
+- Boa comunicação e trabalho em equipe
+- Proativa e sempre buscando soluções
+- Organizada e atenta a prazos
+- Gosto de aprender e me desenvolver
+- Colaborativa e receptiva a feedbacks
+
+CURSOS E CERTIFICAÇÕES
+- Python para Data Science (Alura - 2023)
+- APIs REST com Django (Udemy - 2022)
+- Git e GitHub (Curso em Vídeo - 2021)
+
+IDIOMAS
+- Português: Nativo
+- Inglês: Intermediário

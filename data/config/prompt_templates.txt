@@ -1,0 +1,219 @@
+# Prompt Templates para o Sistema de Recrutamento
+
+## Template 1: Extração de Soft Skills
+
+Você é um especialista em análise de currículos e psicologia organizacional.
+
+Analise o seguinte texto de currículo e identifique as soft skills (habilidades comportamentais) demonstradas pelo candidato. 
+
+Para cada soft skill identificada:
+1. Mencione a soft skill
+2. Cite a evidência textual que suporta essa identificação
+3. Classifique a confiança (alta, média, baixa)
+
+Foque em soft skills como: comunicação, liderança, trabalho em equipe, proatividade, adaptabilidade, resolução de problemas, organização, criatividade, empatia, aprendizado rápido.
+
+Currículo:
+---
+{resume_text}
+---
+
+Retorne no seguinte formato JSON:
+{
+  "soft_skills": [
+    {
+      "skill": "nome da soft skill",
+      "evidence": "evidência textual",
+      "confidence": "alta|média|baixa"
+    }
+  ]
+}
+
+---
+
+## Template 2: Validação de Hard Skills
+
+Você é um especialista técnico em recrutamento de desenvolvedores de software.
+
+Uma lista preliminar de hard skills foi extraída de um currículo usando expressões regulares. Sua tarefa é validar se essas skills realmente aparecem no contexto do currículo e se fazem sentido.
+
+Skills detectadas:
+{detected_skills}
+
+Contexto do currículo:
+---
+{resume_text}
+---
+
+Para cada skill, determine:
+1. Se ela está corretamente identificada (verdadeiro positivo ou falso positivo)
+2. Se há contexto suficiente que demonstra experiência real com a tecnologia
+3. Nível aparente (básico, intermediário, avançado)
+
+Retorne no seguinte formato JSON:
+{
+  "validated_skills": [
+    {
+      "skill": "nome da skill",
+      "is_valid": true/false,
+      "level": "básico|intermediário|avançado",
+      "context": "contexto relevante do currículo"
+    }
+  ]
+}
+
+---
+
+## Template 3: Geração de Justificativa
+
+Você é um gerente de RH experiente escrevendo feedback para candidatos.
+
+Baseado na análise de um candidato para uma vaga específica, gere uma justificativa clara e objetiva explicando a pontuação obtida.
+
+Informações da vaga:
+Título: {job_title}
+Requisitos principais: {job_requirements}
+
+Informações do candidato:
+Nome: {candidate_name}
+Pontuação total: {total_score}
+Hard skills encontradas: {hard_skills}
+Soft skills encontradas: {soft_skills}
+Experiência relevante: {relevant_experience}
+
+Detalhamento da pontuação:
+- Hard skills: {hard_score} pontos
+- Soft skills: {soft_score} pontos
+- Experiência: {experience_score} pontos
+- Formação: {education_score} pontos
+
+Gere uma justificativa de 3-5 parágrafos que:
+1. Resuma os principais pontos fortes do candidato
+2. Explique como as competências se alinham com a vaga
+3. Mencione possíveis gaps ou áreas de melhoria (se houver)
+4. Conclua com uma recomendação clara (fortemente recomendado, recomendado, recomendado com ressalvas, não recomendado)
+
+Mantenha tom profissional, objetivo e respeitoso.
+
+---
+
+## Template 4: Análise de Contexto de Experiência
+
+Você é um recrutador técnico analisando experiências profissionais.
+
+Analise o seguinte texto descrevendo experiências profissionais e extraia informações estruturadas:
+
+Texto:
+---
+{experience_text}
+---
+
+Para cada experiência mencionada, identifique:
+1. Cargo/função
+2. Empresa (se mencionada)
+3. Duração aproximada (em anos ou período)
+4. Principais responsabilidades
+5. Tecnologias/skills utilizadas
+6. Realizações mensuráveis (se mencionadas)
+
+Retorne no seguinte formato JSON:
+{
+  "experiences": [
+    {
+      "role": "cargo",
+      "company": "empresa ou null",
+      "duration": "duração",
+      "responsibilities": ["resp1", "resp2"],
+      "technologies": ["tech1", "tech2"],
+      "achievements": ["achievement1"] ou []
+    }
+  ]
+}
+
+---
+
+## Template 5: Comparação entre Candidatos
+
+Você é um consultor de RH especializado em recrutamento técnico.
+
+Compare os seguintes candidatos para a vaga de {job_title} e forneça insights sobre a melhor escolha:
+
+Candidato 1: {candidate1_summary}
+Candidato 2: {candidate2_summary}
+
+Analise:
+1. Qual candidato tem melhor fit técnico? Por quê?
+2. Qual demonstra melhor fit cultural/comportamental?
+3. Há algum fator de risco em cada candidato?
+4. Qual seria sua recomendação final?
+
+Forneça resposta estruturada e justificada.
+
+---
+
+## Template 6: Extração de Informações de Contato
+
+Extraia informações de contato do seguinte texto de currículo:
+
+{resume_text}
+
+Identifique:
+- Nome completo
+- Email
+- Telefone
+- LinkedIn
+- GitHub
+- Portfolio/Website
+
+Retorne em formato JSON:
+{
+  "name": "nome" ou null,
+  "email": "email" ou null,
+  "phone": "telefone" ou null,
+  "linkedin": "url" ou null,
+  "github": "url" ou null,
+  "portfolio": "url" ou null
+}
+
+---
+
+## Template 7: Análise de Requisitos da Vaga
+
+Você é um analista de requisitos de vagas.
+
+Analise a descrição da vaga abaixo e extraia requisitos estruturados:
+
+Descrição:
+---
+{job_description}
+---
+
+Identifique e categorize:
+
+1. Hard skills obrigatórias
+2. Hard skills desejáveis
+3. Soft skills valorizadas
+4. Experiência mínima requerida
+5. Formação acadêmica esperada
+6. Diferenciais
+
+Retorne no seguinte formato JSON:
+{
+  "required_skills": ["skill1", "skill2"],
+  "preferred_skills": ["skill3", "skill4"],
+  "soft_skills": ["soft1", "soft2"],
+  "minimum_experience": "X anos",
+  "education": "nível esperado",
+  "differentials": ["diff1", "diff2"]
+}
+
+---
+
+## Notas de Uso
+
+- Sempre forneça contexto suficiente ao LLM
+- Use temperatura baixa (0.3-0.5) para extração estruturada
+- Use temperatura média (0.7) para geração de texto explicativo
+- Implemente retry logic para falhas de API
+- Valide o formato JSON retornado
+- Faça sanitização de entrada para evitar prompt injection

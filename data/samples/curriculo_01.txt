@@ -1,0 +1,73 @@
+João Silva
+Email: joao.silva@email.com | Tel: (82) 98765-4321
+LinkedIn: linkedin.com/in/joaosilva | GitHub: github.com/joaosilva
+
+RESUMO PROFISSIONAL
+Desenvolvedor Backend com 5 anos de experiência em desenvolvimento de APIs e sistemas escaláveis. Especialista em Python e tecnologias de nuvem. Apaixonado por código limpo, testes automatizados e arquitetura de software.
+
+EXPERIÊNCIA PROFISSIONAL
+
+Desenvolvedor Backend Sênior | TechCorp | Jan/2022 - Atual
+- Desenvolvimento e manutenção de APIs RESTful usando FastAPI e Django
+- Implementação de arquitetura de microsserviços em AWS
+- Trabalho com PostgreSQL e Redis para otimização de performance
+- Criação de pipelines CI/CD com GitHub Actions
+- Liderança técnica de time de 4 desenvolvedores
+- Redução de 40% no tempo de resposta das APIs através de otimizações
+- Implementação de testes automatizados aumentando cobertura para 85%
+
+Desenvolvedor Python Pleno | DataSolutions | Mar/2020 - Dez/2021
+- Desenvolvimento de APIs REST com Flask
+- Integração com MongoDB e MySQL
+- Containerização de aplicações com Docker
+- Participação em rituais ágeis (Scrum)
+- Desenvolvimento de scripts de automação e ETL
+- Colaboração próxima com time de frontend e mobile
+
+Desenvolvedor Junior | StartupXYZ | Jan/2019 - Fev/2020
+- Desenvolvimento web com Django
+- Manutenção de banco de dados PostgreSQL
+- Criação de testes unitários com pytest
+- Versionamento de código com Git/GitHub
+
+FORMAÇÃO ACADÊMICA
+
+Bacharelado em Ciência da Computação
+Universidade Federal de Alagoas (UFAL) | 2015 - 2018
+
+HABILIDADES TÉCNICAS
+
+Linguagens: Python (avançado), SQL, JavaScript (básico)
+Frameworks: FastAPI, Django, Flask
+Bancos de Dados: PostgreSQL, MySQL, MongoDB, Redis
+DevOps: Docker, Kubernetes, Git, GitHub Actions
+Cloud: AWS (EC2, S3, RDS, Lambda), experiência básica com GCP
+Mensageria: RabbitMQ, conhecimento básico de Kafka
+Testes: pytest, unittest, coverage
+Outros: REST APIs, GraphQL (básico), Microserviços
+
+SOFT SKILLS
+- Comunicação eficaz em ambientes colaborativos
+- Proatividade na identificação e resolução de problemas
+- Capacidade de trabalhar autonomamente e em equipe
+- Adaptabilidade a novas tecnologias e metodologias
+- Mentalidade analítica e atenção a detalhes
+- Documentação técnica clara e acessível
+
+PROJETOS E CONTRIBUIÇÕES
+
+Open Source:
+- Contribuidor do projeto FastAPI (correções de bugs e documentação)
+- Mantém biblioteca Python para validação de CPF/CNPJ (500+ stars no GitHub)
+
+Projetos Pessoais:
+- API de gerenciamento de tarefas com FastAPI + PostgreSQL + Redis
+- Sistema de notificações em tempo real usando WebSockets
+
+IDIOMAS
+- Português: Nativo
+- Inglês: Técnico (leitura e escrita)
+
+CERTIFICAÇÕES
+- AWS Certified Cloud Practitioner (2023)
+- Python Institute PCAP (2020)
