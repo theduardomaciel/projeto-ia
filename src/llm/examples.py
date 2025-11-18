@@ -205,6 +205,11 @@ def main():
     print("\n🚀 Exemplos de uso do módulo LLM")
     print("=" * 60)
 
+    # Carrega variáveis de ambiente
+    from dotenv import load_dotenv
+
+    load_dotenv()
+
     # Verifica se há API keys configuradas
     if (
         not os.getenv("GEMINI_API_KEY")

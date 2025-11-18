@@ -3,14 +3,14 @@ python-dotenv==1.0.0
 
 # LLM Integrations
 google-generativeai==0.8.3      # Gemini API (prioridade)
-openai==1.54.0                  # DeepSeek/Grok via endpoint compatível
+openai==1.54.0                  # Groq/OpenRouter via endpoint OpenAI-compatible
 
 # Data manipulation
 numpy==1.26.4
-pandas==2.2.0
+pandas==2.3.2
 
 # ML utilities (heurísticas, similaridade)
-scikit-learn==1.4.0
+scikit-learn==1.7.2
 
 # PDF extraction (opcional - futuro)
 # PyPDF2==3.0.1

@@ -349,9 +349,9 @@ class LLMFactory:
 
         # Define modelos padrão
         default_models = {
-            "gemini": "gemini-1.5-flash",
-            "groq": "llama-3.1-70b-versatile",
-            "openrouter": "google/gemma-2-9b-it:free",
+            "gemini": "gemini-2.0-flash-lite",
+            "groq": "llama-3.3-70b-versatile",
+            "openrouter": "deepseek/deepseek-chat-v3-0324:free",
         }
 
         if model is None:
