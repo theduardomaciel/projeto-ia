@@ -17,7 +17,7 @@ O projeto integra conceitos de **Agentes Inteligentes (AIMA)**, **LLMs**, **RAG*
 
 ## ⭐ Features
 
-* Extração automática de informações de currículos (texto puro ou estruturado)
+* Extração automática de informações de currículos (.txt, .pdf, .docx)
 * Identificação de *hard skills* técnicas
 * Análise de *soft skills* e características comportamentais
 * Sistema de pontuação configurável para aderência à vaga
@@ -88,8 +88,8 @@ pip install -r requirements.txt
 data/
   samples/
     job.txt              -> descrição da vaga
-    curriculo_01.txt
-    curriculo_02.txt
+    curriculo_01.txt (ou .pdf/.docx)
+    curriculo_02.pdf
     ...
 ```
 
@@ -155,6 +155,7 @@ RANKING DE CANDIDATOS
 * `openai` / `anthropic` / `google-generativeai` → integração com LLM
 * `numpy` / `pandas` → manipulação de dados
 * `scikit-learn` → heurísticas auxiliares (similaridade, vetorização)
+* `pdfplumber` / `python-docx` → leitura unificada de currículos em PDF/DOCX
 * `tqdm` → barras de progresso
 * `rich` → logs bonitos no terminal
 

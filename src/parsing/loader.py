@@ -1,10 +1,9 @@
 """Carregamento de arquivos de vaga e currículos.
 
 Responsabilidades:
- - Ler arquivos .txt (vaga e currículos)
+ - Ler arquivos .txt, .pdf e .docx (vaga e currículos)
  - Inferir nome do candidato a partir do conteúdo
  - Registrar eventos de parsing em log
- - Stub para suporte futuro a PDF
 """
 
 from __future__ import annotations
@@ -17,6 +16,7 @@ import unicodedata
 from datetime import datetime
 
 from src.core.models import Candidate, JobProfile
+from src.parsing.document_extractor import DocumentExtractor
 
 # Import dos extractors (importação tardia para evitar ciclos)
 try:
@@ -71,6 +71,23 @@ def _infer_name(raw_text: str, fallback: str) -> str:
     return fallback
 
 
+def _candidate_fallback_name(file: Path, idx: int | None = None) -> str:
+    if idx is not None:
+        return f"Candidato {idx:02d}"
+
+    folder_hint = file.parent.name.replace("_", " ").replace("-", " ").strip()
+    stem_hint = file.stem.replace("_", " ").replace("-", " ").strip()
+
+    parts = []
+    if folder_hint and folder_hint.lower() not in {"", "data", "cvs"}:
+        parts.append(folder_hint.title())
+    if stem_hint:
+        parts.append(stem_hint.title())
+
+    fallback = " ".join(parts).strip()
+    return fallback or file.stem or "Candidato"
+
+
 def _normalize_whitespace(text: str) -> str:
     """Normaliza espaços em branco, preservando quebras de linha."""
     # Preservar quebras de linha, mas normalizar espaços em cada linha
@@ -86,12 +103,14 @@ def remove_accents(text: str) -> str:
 
 
 class FileLoader:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, document_extractor: DocumentExtractor | None = None) -> None:
+        self.document_extractor = document_extractor or DocumentExtractor(
+            text_reader=_safe_read, logger=_log
+        )
 
     def load_job(self, job_path: str | Path) -> JobProfile:
         path = Path(job_path)
-        raw = _safe_read(path)
+        raw = self.document_extractor.extract_text(path)
         lines = [l.strip() for l in raw.splitlines() if l.strip()]
         title = lines[0][:120] if lines else "Vaga"
         description = raw
@@ -103,15 +122,20 @@ class FileLoader:
 
     def load_candidates(self, cvs_dir: str | Path) -> List[Candidate]:
         dir_path = Path(cvs_dir)
-        pattern = re.compile(r"curriculo_(\d+).txt", re.IGNORECASE)
+        pattern = re.compile(r"curriculo_(\d+)", re.IGNORECASE)
         candidates: List[Candidate] = []
-        for file in sorted(dir_path.glob("*.txt")):
-            m = pattern.match(file.name)
-            if not m:
-                continue
-            idx = int(m.group(1))
-            raw = _safe_read(file)
-            fallback_name = f"Candidato {idx:02d}"
+        supported = self.document_extractor.supported_extensions
+        files = sorted(
+            f
+            for f in dir_path.rglob("*")
+            if f.is_file() and f.suffix.lower() in supported
+        )
+
+        for file in files:
+            m = pattern.match(file.stem)
+            idx = int(m.group(1)) if m else None
+            raw = self.document_extractor.extract_text(file)
+            fallback_name = _candidate_fallback_name(file, idx)
             name = _infer_name(raw, fallback=fallback_name)
             cand = Candidate(name=name, raw_text=raw, file_path=str(file))
             candidates.append(cand)
@@ -119,8 +143,8 @@ class FileLoader:
         return candidates
 
     # Stub futuro para PDF
-    def parse_pdf(self, pdf_path: str | Path) -> None:  # pragma: no cover - futuro
-        raise NotImplementedError("Suporte a PDF não implementado ainda.")
+    def parse_pdf(self, pdf_path: str | Path) -> str:  # pragma: no cover - compat
+        return self.document_extractor.extract_text(pdf_path)
 
 
 class TextNormalizer:

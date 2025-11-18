@@ -54,3 +54,6 @@ htmlcov/
 data/samples/*.pdf  # PDFs de teste (quando implementado)
 logs/
 *.log
+
+# Datasets
+data/datasets/

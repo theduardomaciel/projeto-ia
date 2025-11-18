@@ -103,7 +103,7 @@ data/config/
 ```
 1. [CLI] Usuário fornece vaga + currículos
          ↓
-2. [Parsing] Leitura de arquivos .txt
+2. [Parsing] Leitura de arquivos .txt/.pdf/.docx
          ↓
 3. [Skills] Extração híbrida (regex + LLM)
          ↓
@@ -131,7 +131,7 @@ data/config/
 ## Módulo de Parsing
 
 ### Responsabilidades
-- Carregar arquivos de vaga e currículos (`.txt`, futuro `.pdf`)
+- Carregar arquivos de vaga e currículos (`.txt`, `.pdf`, `.docx`)
 - Normalizar texto para facilitar extração de skills
 - Inferir informações básicas (ex: nome do candidato)
 - Registrar eventos de parsing para auditoria
@@ -150,8 +150,16 @@ candidates = loader.load_candidates("data/samples/")
 **Decisões técnicas**:
 - **Encoding adaptativo**: tenta UTF-8, fallback para Latin-1 (acentos brasileiros)
 - **Inferência de nome**: heurística simples (2-5 tokens com iniciais maiúsculas, evita palavras técnicas)
-- **Padrão de arquivo**: `curriculo_NN.txt` para ordenação automática
+- **Detector de formato**: usa `DocumentExtractor` para normalizar leitura de `.txt/.pdf/.docx`
 - **Logging**: cada arquivo registrado em `logs/parsing_events.log` com tamanho (bytes/chars)
+
+#### DocumentExtractor
+Responsável por converter arquivos `.txt`, `.pdf` e `.docx` em texto puro reutilizável por todo o pipeline.
+
+**Características**:
+- **Dependências específicas**: `pdfplumber` (PDF) e `python-docx` (DOCX)
+- **Logs centralizados**: cada extração registra extensão, caminho e tamanho
+- **Pós-processamento**: normalização de quebras de linha e remoção de espaços fantasmas
 
 #### TextNormalizer
 Pipeline configurável de normalização de texto.
