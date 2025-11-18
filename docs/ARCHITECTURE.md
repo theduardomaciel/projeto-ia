@@ -121,7 +121,7 @@ data/config/
 | Categoria | Tecnologia | Justificativa |
 |-----------|-----------|---------------|
 | Linguagem | Python 3.10+ | Type hints, dataclasses, ecossistema ML/IA |
-| LLMs | Gemini (prioridade), DeepSeek, Grok | APIs gratuitas para uso acadêmico |
+| LLMs | Gemini (prioridade), Groq, OpenRouter | APIs gratuitas e acessíveis para uso acadêmico |
 | Dados | JSON, TXT | Simplicidade, versionamento |
 | CLI | rich, tqdm | UX profissional no terminal |
 | Testes | pytest | Padrão da indústria |
