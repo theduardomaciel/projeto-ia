@@ -13,7 +13,24 @@ from .loader import ParserService
 
 
 def parse_all(
-    job_path: str | Path, cvs_dir: str | Path
+    job_path: str | Path,
+    cvs_dir: str | Path,
+    extract_experience: bool = True,
+    extract_education: bool = True,
+    llm_client=None,
 ) -> Tuple[JobProfile, List[Candidate]]:
-    service = ParserService()
+    """Parse job and candidates with optional experience/education extraction.
+
+    Args:
+        job_path: Path to job description file
+        cvs_dir: Directory containing resume files
+        extract_experience: Enable experience extraction (default: True)
+        extract_education: Enable education extraction (default: True)
+        llm_client: Optional LLM client for fallback extraction
+    """
+    service = ParserService(
+        extract_experience=extract_experience,
+        extract_education=extract_education,
+        llm_client=llm_client,
+    )
     return service.parse(job_path, cvs_dir)

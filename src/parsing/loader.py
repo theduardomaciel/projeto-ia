@@ -18,6 +18,14 @@ from datetime import datetime
 
 from src.core.models import Candidate, JobProfile
 
+# Import dos extractors (importação tardia para evitar ciclos)
+try:
+    from src.parsing.experience_extractor import ExperienceExtractor
+    from src.parsing.education_extractor import EducationExtractor
+except ImportError:
+    ExperienceExtractor = None
+    EducationExtractor = None
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 LOG_FILE = PROJECT_ROOT / "logs" / "parsing_events.log"
 
@@ -64,7 +72,11 @@ def _infer_name(raw_text: str, fallback: str) -> str:
 
 
 def _normalize_whitespace(text: str) -> str:
-    return re.sub(r"\s+", " ", text).strip()
+    """Normaliza espaços em branco, preservando quebras de linha."""
+    # Preservar quebras de linha, mas normalizar espaços em cada linha
+    lines = text.split("\n")
+    normalized_lines = [re.sub(r"[ \t]+", " ", line).strip() for line in lines]
+    return "\n".join(normalized_lines)
 
 
 def remove_accents(text: str) -> str:
@@ -132,14 +144,42 @@ class TextNormalizer:
 
 class ParserService:
     def __init__(
-        self, loader: FileLoader | None = None, normalizer: TextNormalizer | None = None
+        self,
+        loader: FileLoader | None = None,
+        normalizer: TextNormalizer | None = None,
+        extract_experience: bool = True,
+        extract_education: bool = True,
+        llm_client=None,
     ) -> None:
         self.loader = loader or FileLoader()
         self.normalizer = normalizer or TextNormalizer()
+        self.extract_experience = extract_experience
+        self.extract_education = extract_education
+
+        # Inicializar extractors se habilitados
+        self.exp_extractor = None
+        self.edu_extractor = None
+
+        if extract_experience and ExperienceExtractor:
+            self.exp_extractor = ExperienceExtractor(llm_client=llm_client)
+
+        if extract_education and EducationExtractor:
+            self.edu_extractor = EducationExtractor(llm_client=llm_client)
 
     def parse(self, job_path: str | Path, cvs_dir: str | Path):
         job = self.loader.load_job(job_path)
         candidates = self.loader.load_candidates(cvs_dir)
+
+        # Normalizar texto e extrair informações estruturadas
         for cand in candidates:
             cand.normalized_text = self.normalizer.normalize(cand.raw_text)
+
+            # Extrair experiência profissional
+            if self.exp_extractor:
+                cand.experiences = self.exp_extractor.extract_from_candidate(cand)
+
+            # Extrair formação acadêmica
+            if self.edu_extractor:
+                cand.education = self.edu_extractor.extract_from_candidate(cand)
+
         return job, candidates

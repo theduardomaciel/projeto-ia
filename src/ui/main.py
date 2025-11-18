@@ -102,6 +102,30 @@ def main(argv: Optional[list[str]] = None) -> int:
             print(f"   Experiência: {breakdown.get('experience', 0):.1f} pts")
             print(f"   Educação: {breakdown.get('education', 0):.1f} pts")
 
+            # Detalhar experiência
+            if c.experiences:
+                print(f"   Experiencias: {len(c.experiences)}")
+                for exp in c.experiences[:2]:  # Top 2
+                    print(
+                        f"      - {exp.role}"
+                        + (f" @ {exp.company}" if exp.company else "")
+                    )
+                    if exp.duration:
+                        print(f"        Duracao: {exp.duration}")
+            else:
+                print(f"   Experiencias: Nenhuma identificada")
+
+            # Detalhar educação
+            if c.education:
+                print(f"   Formacao: {len(c.education)} curso(s)")
+                for edu in c.education[:2]:  # Top 2
+                    status_icon = "[OK]" if edu.status == "completed" else "[...]"
+                    print(f"      {status_icon} {edu.degree}")
+                    if edu.institution:
+                        print(f"            {edu.institution}")
+            else:
+                print(f"   Formacao: Nenhuma identificada")
+
             # Top 3 hard skills por peso
             hard_detail = breakdown.get("hard_skills_detail", {})
             if hard_detail:
@@ -109,7 +133,7 @@ def main(argv: Optional[list[str]] = None) -> int:
                     hard_detail.items(), key=lambda x: x[1], reverse=True
                 )[:3]
                 print(
-                    f"   Principais skills: {', '.join(f'{k} ({v:.1f})' for k, v in top_hard)}"
+                    f"   Top skills: {', '.join(f'{k} ({v:.1f})' for k, v in top_hard)}"
                 )
 
     if args.explain:
