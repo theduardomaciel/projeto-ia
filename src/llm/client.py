@@ -128,8 +128,24 @@ class GeminiClient(LLMClient):
                 temperature=temperature, max_output_tokens=max_tokens, **kwargs
             )
 
+            # Safety settings para evitar bloqueios
+            safety_settings = [
+                {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
+                {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
+                {
+                    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                    "threshold": "BLOCK_NONE",
+                },
+                {
+                    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                    "threshold": "BLOCK_NONE",
+                },
+            ]
+
             response = self._model.generate_content(
-                prompt, generation_config=generation_config
+                prompt,
+                generation_config=generation_config,
+                safety_settings=safety_settings,
             )
 
             latency = time.time() - start_time

@@ -115,6 +115,16 @@ python -m src.ui.main --job data/samples/job.txt --cvs data/samples/ --rank
 python -m src.ui.main --job data/samples/job.txt --cvs data/samples/ --extract --rank
 ```
 
+**Com justificativas geradas por LLM:**
+```bash
+python -m src.ui.main --job data/samples/job.txt --cvs data/samples/ --rank --explain
+```
+
+**Especificar provedor e modelo LLM:**
+```bash
+python -m src.ui.main --job data/samples/job.txt --cvs data/samples/ --rank --explain --provider gemini --model gemini-2.5-flash
+```
+
 ### 3. Exemplo de saída (ranking)
 
 ```

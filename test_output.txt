@@ -1,0 +1,83 @@
+Vaga:
+  Título: Desenvolvedor Backend Python - Pleno/Sênior
+  Arquivo: data\samples\job.txt
+
+Candidatos carregados: 4
+01. João Silva — arquivo=curriculo_01.txt
+    preview: joao silva email: joao.silva@email.com | tel: (82) 98765-4321 linkedin: linkedin.com/in/joaosilva | github: github.com/joaosilva resumo profissional desenvolvedor backend com 5 anos de experiencia em …
+02. Maria Santos — arquivo=curriculo_02.txt
+    preview: maria santos maria.santos@email.com | (82) 99876-5432 portfolio: mariacodes.dev | github: github.com/mariasantos sobre mim desenvolvedora fullstack com foco em backend. 2 anos de experiencia com pytho…
+03. Pedro Costa — arquivo=curriculo_03.txt
+    preview: pedro costa pedro.costa.dev@email.com tel: (82) 98123-4567 objetivo desenvolvedor java buscando migracao para python backend experiencia profissional desenvolvedor java | softwarehouse | 2020 - atual …
+04. Ana Paula Oliveira — arquivo=curriculo_04.txt
+    preview: ana paula oliveira anapaulaoliveira@email.com | (82) 99654-3210 linkedin: linkedin.com/in/anapaulaoliveira perfil profissional desenvolvedora python especializada em automacao, web scraping e analise …
+
+Pontuando e rankeando...
+
+============================================================
+RANKING DE CANDIDATOS
+============================================================
+
+1º lugar: Maria Santos — 4.5 pontos
+   Arquivo: curriculo_02.txt
+   Hard skills: 3.4 pts
+   Soft skills: 1.1 pts
+   Experiência: 0.0 pts
+   Educação: 0.0 pts
+   Principais skills: python (9.0), rest api (7.7), postgresql (7.2)
+
+2º lugar: João Silva — 4.4 pontos
+   Arquivo: curriculo_01.txt
+   Hard skills: 3.5 pts
+   Soft skills: 0.9 pts
+   Experiência: 0.0 pts
+   Educação: 0.0 pts
+   Principais skills: python (9.0), api (8.1), rest api (7.7)
+
+3º lugar: Ana Paula Oliveira — 4.2 pontos
+   Arquivo: curriculo_04.txt
+   Hard skills: 3.3 pts
+   Soft skills: 0.9 pts
+   Experiência: 0.0 pts
+   Educação: 0.0 pts
+   Principais skills: python (9.0), api (8.1), rest api (7.7)
+
+4º lugar: Pedro Costa — 3.6 pontos
+   Arquivo: curriculo_03.txt
+   Hard skills: 3.6 pts
+   Soft skills: 0.0 pts
+   Experiência: 0.0 pts
+   Educação: 0.0 pts
+   Principais skills: python (9.0), rest api (7.7), postgresql (7.2)
+
+============================================================
+JUSTIFICATIVAS (geradas por LLM)
+============================================================
+
+[!] Erro ao gerar justificativas: 'charmap' codec can't encode characters in position 2-61: character maps to <undefined>
+Gerando justificativas com fallback (heuristicas)...
+
+
+1º lugar: Maria Santos
+------------------------------------------------------------
+Maria Santos está em 1ª posição no ranking e obteve 4.5 pontos na análise.
+
+O candidato demonstra forte perfil técnico com 21 hard skills identificadas, resultando em 3.4 pontos nesta categoria. Em termos de competências comportamentais, foram identificadas 1 soft skills (1.1 pts).
+
+Recomendação: Fortemente recomendado para a vaga.
+
+2º lugar: João Silva
+------------------------------------------------------------
+João Silva está em 2ª posição no ranking e obteve 4.4 pontos na análise.
+
+O candidato demonstra forte perfil técnico com 32 hard skills identificadas, resultando em 3.5 pontos nesta categoria. Em termos de competências comportamentais, foram identificadas 2 soft skills (0.9 pts).
+
+Recomendação: Fortemente recomendado para a vaga.
+
+3º lugar: Ana Paula Oliveira
+------------------------------------------------------------
+Ana Paula Oliveira está em 3ª posição no ranking e obteve 4.2 pontos na análise.
+
+O candidato demonstra forte perfil técnico com 24 hard skills identificadas, resultando em 3.3 pontos nesta categoria. Em termos de competências comportamentais, foram identificadas 2 soft skills (0.9 pts).
+
+Recomendação: Fortemente recomendado para a vaga.
