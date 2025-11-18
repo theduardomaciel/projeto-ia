@@ -12,9 +12,9 @@ from .loader import FileLoader, TextNormalizer, ParserService
 from .service import parse_all
 
 __all__ = [
-	"DocumentExtractor",
-	"FileLoader",
-	"TextNormalizer",
-	"ParserService",
-	"parse_all",
+    "DocumentExtractor",
+    "FileLoader",
+    "TextNormalizer",
+    "ParserService",
+    "parse_all",
 ]
