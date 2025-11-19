@@ -1,5 +1,5 @@
 <section
-  class="rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-8 py-12 text-center"
+  class="rounded-2xl border-2 border-dashed border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-8 py-12 text-center"
 >
   <div
     class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400"
@@ -19,10 +19,10 @@
       />
     </svg>
   </div>
-  <h2 class="mt-5 text-xl font-semibold text-slate-900 dark:text-white">
+  <h2 class="mt-5 text-xl font-semibold text-neutral-900 dark:text-white">
     Pronto para começar?
   </h2>
-  <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+  <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-300">
     Faça upload de um ou mais currículos para gerar o ranking com análise de
     hard e soft skills.
   </p>

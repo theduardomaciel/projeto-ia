@@ -121,10 +121,10 @@
 
 <main class="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
   <section
-    class="relative overflow-hidden rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700 sm:p-8"
+    class="relative overflow-hidden rounded-2xl bg-white dark:bg-neutral-800 p-6 shadow-sm ring-1 ring-neutral-200 dark:ring-neutral-700 sm:p-8"
   >
     <div
-      class="absolute inset-0 bg-linear-to-br from-primary-50 via-white to-slate-50 dark:from-slate-800 dark:via-slate-900 dark:to-slate-800 opacity-40"
+      class="absolute inset-0 bg-linear-to-br from-primary-50 via-white to-neutral-50 dark:from-neutral-800 dark:via-neutral-900 dark:to-neutral-800 opacity-40"
     ></div>
     <div
       class="relative flex flex-col gap-6 md:flex-row md:items-start md:justify-between"
@@ -136,12 +136,12 @@
           Sistema de apoio ao recrutamento
         </p>
         <h1
-          class="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl"
+          class="text-2xl font-bold text-neutral-900 dark:text-white sm:text-3xl"
         >
           Análise inteligente de currículos
         </h1>
         <p
-          class="max-w-2xl text-sm text-slate-600 dark:text-slate-300 leading-relaxed"
+          class="max-w-2xl text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed"
         >
           Carregue currículos em PDF, DOCX ou TXT, envie para o backend e
           visualize o ranking com hard skills, soft skills e justificativas
@@ -178,21 +178,21 @@
   {/if}
 
   <section
-    class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm"
+    class="rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-5 shadow-sm"
   >
-    <p class="text-sm font-semibold text-slate-900 dark:text-white">
+    <p class="text-sm font-semibold text-neutral-900 dark:text-white">
       Vaga (opcional)
     </p>
     <div class="mt-4 grid gap-4 md:grid-cols-2">
       <div>
         <label
           for="job-text"
-          class="block text-xs font-medium text-slate-700 dark:text-slate-300"
+          class="block text-xs font-medium text-neutral-700 dark:text-neutral-300"
           >Descrição da vaga (texto)</label
         >
         <textarea
           id="job-text"
-          class="mt-2 w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-800"
+          class="mt-2 w-full rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 px-3 py-2 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-800"
           rows="4"
           bind:value={jobText}
           placeholder="Cole aqui a descrição da vaga..."
@@ -201,12 +201,12 @@
       <div>
         <label
           for="job-file"
-          class="block text-xs font-medium text-slate-700 dark:text-slate-300"
+          class="block text-xs font-medium text-neutral-700 dark:text-neutral-300"
           >Arquivo da vaga (.txt)</label
         >
         <input
           id="job-file"
-          class="mt-2 w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white file:mr-3 file:rounded-md file:border-0 file:bg-primary-600 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-800"
+          class="mt-2 w-full rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-sm text-neutral-900 dark:text-white file:mr-3 file:rounded-md file:border-0 file:bg-primary-600 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-800"
           type="file"
           accept=".txt,text/plain"
           on:change={(e) => {
@@ -215,7 +215,7 @@
           }}
         />
         {#if jobFile}
-          <p class="mt-2 text-xs text-slate-600 dark:text-slate-400">
+          <p class="mt-2 text-xs text-neutral-600 dark:text-neutral-400">
             📄 {jobFile.name}
           </p>
         {/if}

@@ -62,16 +62,16 @@
 
 <section class="space-y-3">
   <header>
-    <p class="text-sm font-medium text-slate-600 dark:text-slate-300">
+    <p class="text-sm font-medium text-neutral-600 dark:text-neutral-300">
       Envie arquivos em PDF, DOCX ou TXT
     </p>
   </header>
 
   <div
-    class={`flex flex-col items-center justify-center rounded-2xl border-2 border-dashed bg-white dark:bg-slate-800 px-6 py-12 text-center transition-all ${
+    class={`flex flex-col items-center justify-center rounded-2xl border-2 border-dashed bg-white dark:bg-neutral-800 px-6 py-12 text-center transition-all ${
       dragActive
         ? "border-primary-400 dark:border-primary-500 bg-primary-50 dark:bg-primary-900/30 shadow-md"
-        : "border-slate-300 dark:border-slate-600"
+        : "border-neutral-300 dark:border-neutral-600"
     }`}
     on:dragover={handleDragOver}
     on:dragleave={handleDragLeave}
@@ -97,12 +97,12 @@
         />
       </svg>
     </div>
-    <p class="mt-4 text-base font-semibold text-slate-900 dark:text-white">
+    <p class="mt-4 text-base font-semibold text-neutral-900 dark:text-white">
       Arraste e solte os currículos aqui
     </p>
-    <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">ou</p>
+    <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">ou</p>
     <label
-      class="mt-3 inline-flex cursor-pointer items-center gap-2 rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-semibold text-black dark:text-white shadow-sm transition hover:bg-primary-700 focus-within:ring-2 focus-within:ring-primary-500 dark:focus-within:ring-primary-400 focus-within:ring-offset-2 dark:focus-within:ring-offset-slate-800"
+      class="mt-3 inline-flex cursor-pointer items-center gap-2 rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 focus-within:ring-2 focus-within:ring-primary-500 dark:focus-within:ring-primary-400 focus-within:ring-offset-2 dark:focus-within:ring-offset-neutral-800"
     >
       <input
         type="file"
@@ -121,18 +121,18 @@
 
   {#if files.length}
     <div
-      class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 shadow-sm"
+      class="rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-4 shadow-sm"
       transition:fade
     >
       <div class="flex items-center justify-between">
-        <p class="text-sm font-medium text-slate-900 dark:text-white">
+        <p class="text-sm font-medium text-neutral-900 dark:text-white">
           {files.length} arquivo{files.length !== 1 ? "s" : ""} selecionado{files.length !==
           1
             ? "s"
             : ""}
         </p>
         <button
-          class="rounded-lg bg-primary-600 px-4 py-2 text-xs font-semibold text-black dark:text-white transition hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="rounded-lg bg-primary-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
           on:click={() => dispatch("upload")}
           disabled={isUploading}
         >
@@ -142,20 +142,20 @@
       <ul class="mt-3 space-y-2">
         {#each files as file, index}
           <li
-            class="flex items-center justify-between rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 px-4 py-3"
+            class="flex items-center justify-between rounded-lg border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900/50 px-4 py-3"
           >
             <div class="flex-1 min-w-0">
               <p
-                class="truncate font-medium text-slate-900 dark:text-white text-sm"
+                class="truncate font-medium text-neutral-900 dark:text-white text-sm"
               >
                 {file.name}
               </p>
-              <p class="text-xs text-slate-500 dark:text-slate-400">
+              <p class="text-xs text-neutral-500 dark:text-neutral-400">
                 {(file.size / 1024).toFixed(1)} KB
               </p>
             </div>
             <button
-              class="ml-3 rounded-md p-1.5 text-slate-400 dark:text-slate-500 transition hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-700 dark:hover:text-slate-300 disabled:opacity-50"
+              class="ml-3 rounded-md p-1.5 text-neutral-400 dark:text-neutral-500 transition hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:text-neutral-700 dark:hover:text-neutral-300 disabled:opacity-50"
               on:click={() => dispatch("remove", index)}
               aria-label={`Remover ${file.name}`}
               disabled={isUploading}
@@ -181,16 +181,16 @@
       {#if isUploading}
         <div class="mt-4" aria-live="polite" transition:fade>
           <div
-            class="flex items-center justify-between text-xs font-medium text-slate-600 dark:text-slate-300"
+            class="flex items-center justify-between text-xs font-medium text-neutral-600 dark:text-neutral-300"
           >
             <span>Processando...</span>
             <span>{progress}%</span>
           </div>
           <div
-            class="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700"
+            class="mt-2 h-2 w-full overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-700"
           >
             <div
-              class="h-full rounded-full bg-gradient-to-r from-primary-500 to-primary-600 transition-all duration-300"
+              class="h-full rounded-full bg-linear-to-r from-primary-500 to-primary-600 transition-all duration-300"
               style={`width:${progress}%`}
             ></div>
           </div>

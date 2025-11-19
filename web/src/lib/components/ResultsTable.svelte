@@ -19,80 +19,83 @@
 </script>
 
 <div
-  class="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm"
+  class="overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 shadow-sm"
 >
   <div
-    class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 px-6 py-4"
+    class="flex items-center justify-between border-b border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900/50 px-6 py-4"
   >
     <div>
       <p
-        class="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400"
+        class="text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400"
       >
         Ranking
       </p>
-      <p class="text-base font-semibold text-slate-900 dark:text-white">
+      <p class="text-base font-semibold text-neutral-900 dark:text-white">
         Candidatos analisados
       </p>
     </div>
-    <p class="text-xs text-slate-500 dark:text-slate-400">
+    <p class="text-xs text-neutral-500 dark:text-neutral-400">
       Clique no cabeçalho para ordenar
     </p>
   </div>
   <div class="overflow-x-auto">
     <table
-      class="min-w-full divide-y divide-slate-200 dark:divide-slate-700 text-left text-sm"
+      class="min-w-full divide-y divide-neutral-200 dark:divide-neutral-700 text-left text-sm"
     >
-      <thead class="bg-slate-50 dark:bg-slate-900/50">
+      <thead class="bg-neutral-50 dark:bg-neutral-900/50">
         <tr>
           <th
-            class="px-6 py-3.5 text-xs font-medium uppercase tracking-wider text-slate-600 dark:text-slate-400"
+            class="px-6 py-3.5 text-xs font-medium uppercase tracking-wider text-neutral-600 dark:text-neutral-400"
           >
             <button
-              class="flex items-center gap-1.5 hover:text-slate-900 dark:hover:text-white"
+              class="flex items-center gap-1.5 hover:text-neutral-900 dark:hover:text-white"
               on:click={() => toggleSort("ranking_position")}
             >
               Posição <span class="text-xs">{iconFor("ranking_position")}</span>
             </button>
           </th>
           <th
-            class="px-6 py-3.5 text-xs font-medium uppercase tracking-wider text-slate-600 dark:text-slate-400"
+            class="px-6 py-3.5 text-xs font-medium uppercase tracking-wider text-neutral-600 dark:text-neutral-400"
           >
             <button
-              class="flex items-center gap-1.5 hover:text-slate-900 dark:hover:text-white"
+              class="flex items-center gap-1.5 hover:text-neutral-900 dark:hover:text-white"
               on:click={() => toggleSort("candidate_name")}
             >
               Candidato <span class="text-xs">{iconFor("candidate_name")}</span>
             </button>
           </th>
           <th
-            class="px-6 py-3.5 text-xs font-medium uppercase tracking-wider text-slate-600 dark:text-slate-400"
+            class="px-6 py-3.5 text-xs font-medium uppercase tracking-wider text-neutral-600 dark:text-neutral-400"
           >
             <button
-              class="flex items-center gap-1.5 hover:text-slate-900 dark:hover:text-white"
+              class="flex items-center gap-1.5 hover:text-neutral-900 dark:hover:text-white"
               on:click={() => toggleSort("match_score")}
             >
               Match <span class="text-xs">{iconFor("match_score")}</span>
             </button>
           </th>
           <th
-            class="px-6 py-3.5 text-xs font-medium uppercase tracking-wider text-slate-600 dark:text-slate-400"
+            class="px-6 py-3.5 text-xs font-medium uppercase tracking-wider text-neutral-600 dark:text-neutral-400"
             >Hard skills</th
           >
           <th
-            class="px-6 py-3.5 text-xs font-medium uppercase tracking-wider text-slate-600 dark:text-slate-400"
+            class="px-6 py-3.5 text-xs font-medium uppercase tracking-wider text-neutral-600 dark:text-neutral-400"
             >Soft skills</th
           >
         </tr>
       </thead>
       <tbody
-        class="divide-y divide-slate-100 dark:divide-slate-700 bg-white dark:bg-slate-800"
+        class="divide-y divide-neutral-100 dark:divide-neutral-700 bg-white dark:bg-neutral-800"
       >
         {#each results as candidate}
-          <tr class="transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
-            <td class="px-6 py-4 font-medium text-slate-700 dark:text-slate-300"
+          <tr
+            class="transition hover:bg-neutral-50 dark:hover:bg-neutral-700/50"
+          >
+            <td
+              class="px-6 py-4 font-medium text-neutral-700 dark:text-neutral-300"
               >#{candidate.ranking_position}</td
             >
-            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white"
+            <td class="px-6 py-4 font-medium text-neutral-900 dark:text-white"
               >{candidate.candidate_name}</td
             >
             <td class="px-6 py-4">
@@ -103,20 +106,22 @@
                   {candidate.match_score.toFixed(0)}%
                 </span>
                 <div
-                  class="h-1.5 w-20 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700"
+                  class="h-1.5 w-20 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-700"
                 >
                   <div
-                    class="h-full bg-linear-to-r from-slate-500 to-slate-600 transition-all"
+                    class="h-full bg-linear-to-r from-primary-500 to-primary-600 transition-all"
                     style={`width:${candidate.match_score}%`}
                   ></div>
                 </div>
               </div>
             </td>
-            <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-300">
+            <td
+              class="px-6 py-4 text-sm text-neutral-600 dark:text-neutral-300"
+            >
               {#if candidate.hard_skills.length}
                 {candidate.hard_skills.slice(0, 3).join(", ")}
                 {#if candidate.hard_skills.length > 3}
-                  <span class="text-xs text-slate-400 dark:text-slate-500">
+                  <span class="text-xs text-neutral-400 dark:text-neutral-500">
                     +{candidate.hard_skills.length - 3}</span
                   >
                 {/if}
@@ -124,11 +129,11 @@
                 —
               {/if}
             </td>
-            <td class="px-6 py-3 text-slate-500 dark:text-slate-300">
+            <td class="px-6 py-3 text-neutral-500 dark:text-neutral-300">
               {#if candidate.soft_skills.length}
                 {candidate.soft_skills.slice(0, 3).join(", ")}
                 {#if candidate.soft_skills.length > 3}
-                  <span class="text-xs text-slate-400 dark:text-slate-500">
+                  <span class="text-xs text-neutral-400 dark:text-neutral-500">
                     +{candidate.soft_skills.length - 3}</span
                   >
                 {/if}
