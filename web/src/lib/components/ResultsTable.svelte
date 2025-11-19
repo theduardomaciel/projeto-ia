@@ -106,7 +106,7 @@
                   class="h-1.5 w-20 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700"
                 >
                   <div
-                    class="h-full bg-gradient-to-r from-primary-500 to-primary-600 transition-all"
+                    class="h-full bg-linear-to-r from-slate-500 to-slate-600 transition-all"
                     style={`width:${candidate.match_score}%`}
                   ></div>
                 </div>
@@ -124,8 +124,7 @@
                 —
               {/if}
             </td>
-            <td class="px-6 py-3 text-slate-500 dark:text-slate-300"
-              >ark:text-slate-300">
+            <td class="px-6 py-3 text-slate-500 dark:text-slate-300">
               {#if candidate.soft_skills.length}
                 {candidate.soft_skills.slice(0, 3).join(", ")}
                 {#if candidate.soft_skills.length > 3}

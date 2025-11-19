@@ -43,7 +43,7 @@
       class="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-700"
     >
       <div
-        class="h-full rounded-full bg-gradient-to-r from-primary-500 to-primary-600 dark:from-primary-400 dark:to-primary-500 transition-all"
+        class="h-full rounded-full bg-linear-to-r from-slate-500 to-slate-600 transition-all"
         style={`width:${normalizedScore}%`}
       ></div>
     </div>
