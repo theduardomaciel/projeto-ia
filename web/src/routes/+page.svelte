@@ -3,18 +3,32 @@
   import CandidateCard from "$lib/components/CandidateCard.svelte";
   import ResultsTable from "$lib/components/ResultsTable.svelte";
   import EmptyState from "$lib/components/EmptyState.svelte";
-  import { analyzeResumes } from "$lib/api";
+  import { analyzeResumes, checkHealth } from "$lib/api";
   import type { CandidateResult, SortDirection, SortKey } from "$lib/types";
+  import { onMount } from "svelte";
 
   let selectedFiles: File[] = [];
   let results: CandidateResult[] = [];
   let isUploading = false;
   let uploadProgress = 0;
-  let statusMessage = "Envie currículos para começar.";
+  let statusMessage = "Checando backend...";
   let errorMessage: string | null = null;
   let sortKey: SortKey = "ranking_position";
   let sortDirection: SortDirection = "asc";
   let abortController: AbortController | null = null;
+
+  // Job (optional)
+  let jobText: string = "";
+  let jobFile: File | null = null;
+
+  onMount(async () => {
+    try {
+      const ok = await checkHealth();
+      statusMessage = ok ? "Backend online" : "Backend não respondeu";
+    } catch {
+      statusMessage = "Status do backend desconhecido";
+    }
+  });
 
   $: sortedResults = [...results].sort((a, b) => {
     const multiplier = sortDirection === "asc" ? 1 : -1;
@@ -57,9 +71,13 @@
     }, 300);
 
     try {
+      const options: { jobText?: string; jobFile?: File } = {};
+      if (jobFile) options.jobFile = jobFile;
+      if (jobText.trim()) options.jobText = jobText.trim();
+
       const response = await analyzeResumes(
         selectedFiles,
-        undefined,
+        Object.keys(options).length ? options : undefined,
         abortController.signal,
       );
       results = response
@@ -150,6 +168,42 @@
       <p>{errorMessage}</p>
     </div>
   {/if}
+
+  <section class="rounded-2xl bg-white/80 p-4 shadow-sm">
+    <p class="text-sm font-medium text-slate-700">Vaga (opcional)</p>
+    <div class="mt-3 grid gap-4 md:grid-cols-2">
+      <div>
+        <label for="job-text" class="text-xs font-semibold text-slate-500"
+          >Descrição da vaga (texto)</label
+        >
+        <textarea
+          id="job-text"
+          class="mt-1 w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-700 outline-none focus:ring-2 focus:ring-primary-200"
+          rows="4"
+          bind:value={jobText}
+          placeholder="Cole aqui a descrição da vaga..."
+        ></textarea>
+      </div>
+      <div>
+        <label for="job-file" class="text-xs font-semibold text-slate-500"
+          >Arquivo da vaga (.txt)</label
+        >
+        <input
+          id="job-file"
+          class="mt-1 w-full rounded-xl border border-slate-200 bg-white p-2 text-sm text-slate-700 outline-none file:mr-3 file:rounded-lg file:border-0 file:bg-primary-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-primary-700"
+          type="file"
+          accept=".txt,text/plain"
+          on:change={(e) => {
+            const f = (e.target as HTMLInputElement).files?.[0] || null;
+            jobFile = f;
+          }}
+        />
+        {#if jobFile}
+          <p class="mt-1 text-xs text-slate-500">Selecionado: {jobFile.name}</p>
+        {/if}
+      </div>
+    </div>
+  </section>
 
   <UploadPanel
     {isUploading}

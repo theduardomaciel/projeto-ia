@@ -161,19 +161,6 @@ RANKING DE CANDIDATOS
 
 ---
 
-## 🔍 Programação em Pares com um LLM
-
-Durante o desenvolvimento, o sistema registra:
-
-* exemplos de prompts utilizados
-* respostas do LLM
-* sugestões adotadas ou rejeitadas
-* análises críticas de decisões incorretas ou enviesadas
-
-Esse material é utilizado no relatório final da disciplina.
-
----
-
 ## 📁 Estrutura do Repositório
 
 ```
@@ -190,8 +177,8 @@ Esse material é utilizado no relatório final da disciplina.
 │   ├── samples/
 │   └── config/
 ├── docs/
-│   └── relatorio/ (opcional)
 ├── tests/
+├── web/
 ├── requirements.txt
 ├── README.md
 └── .env.example
@@ -204,10 +191,16 @@ Esse material é utilizado no relatório final da disciplina.
 1. [x] Pipeline básico de extração e pontuação
 2. [x] Integração com LLM para explicabilidade
 3. [ ] Implementação completa do módulo de soft skills
-4. [ ] RAG para enriquecimento da análise
-5. [ ] Interface web simples (Flask ou FastAPI)
-6. [ ] Dashboard para visualização dos resultados
-7. [ ] Módulo de fairness & bias-check
+4. [ ] Interface web simples (Flask ou FastAPI)
+5. [ ] Dashboard para visualização dos resultados
+6. [ ] Módulo de fairness & bias-check
+
+---
+
+## ℹ️ Fontes dos Datasets:
+
+- https://www.kaggle.com/datasets/snehaanbhawal/resume-dataset?resource=download
+- https://github.com/NataliaVanetik/vacancy-resume-matching-dataset?utm_source=chatgpt.com
 
 ---
 
