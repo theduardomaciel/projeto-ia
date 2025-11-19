@@ -1,6 +1,11 @@
 # Core dependencies
 python-dotenv==1.0.0
 
+# Web API
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+python-multipart==0.0.9         # File uploads
+
 # LLM Integrations
 google-generativeai==0.8.3      # Gemini API (prioridade)
 openai==1.54.0                  # Groq/OpenRouter via endpoint OpenAI-compatible
