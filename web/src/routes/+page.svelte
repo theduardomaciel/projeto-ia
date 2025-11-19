@@ -119,39 +119,39 @@
   }
 </script>
 
-<main class="mx-auto max-w-6xl space-y-10 px-6 py-10">
+<main class="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
   <section
-    class="rounded-4xl relative overflow-hidden bg-white/80 p-8 shadow-xl ring-1 ring-slate-100"
+    class="relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-8"
   >
     <div
-      class="absolute inset-y-0 right-0 w-1/2 bg-linear-to-br from-primary-50 via-white to-slate-50 opacity-60 blur-3xl"
+      class="absolute inset-0 bg-linear-to-br from-primary-50 via-white to-slate-50 opacity-40"
     ></div>
     <div
-      class="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between"
+      class="relative flex flex-col gap-6 md:flex-row md:items-start md:justify-between"
     >
-      <div class="space-y-3">
+      <div class="space-y-2 flex-1">
         <p
-          class="text-sm font-semibold uppercase tracking-widest text-primary-500"
+          class="text-xs font-semibold uppercase tracking-wider text-primary-600"
         >
           Sistema de apoio ao recrutamento
         </p>
-        <h1 class="text-3xl font-bold text-slate-900">
+        <h1 class="text-2xl font-bold text-slate-900 sm:text-3xl">
           Análise inteligente de currículos
         </h1>
-        <p class="max-w-2xl text-sm text-slate-500">
-          Carregue currículos em PDF ou DOCX, envie para o backend e visualize o
-          ranking com hard skills, soft skills e justificativas geradas pelo
-          pipeline de IA.
+        <p class="max-w-2xl text-sm text-slate-600 leading-relaxed">
+          Carregue currículos em PDF, DOCX ou TXT, envie para o backend e
+          visualize o ranking com hard skills, soft skills e justificativas
+          geradas pelo pipeline de IA.
         </p>
       </div>
       <div
-        class="rounded-3xl border border-primary-100 bg-primary-50/60 px-6 py-4 text-sm text-primary-800"
+        class="shrink-0 rounded-xl border border-primary-200 bg-primary-50 px-4 py-3 text-sm"
       >
-        <p class="font-semibold">Status</p>
-        <p>{statusMessage}</p>
+        <p class="font-semibold text-primary-900">Status</p>
+        <p class="mt-1 text-primary-700">{statusMessage}</p>
         {#if isUploading}
           <button
-            class="mt-3 text-xs font-semibold text-primary-700 underline"
+            class="mt-2 text-xs font-medium text-primary-700 underline hover:text-primary-900"
             on:click={cancelUpload}>Cancelar envio</button
           >
         {/if}
@@ -161,36 +161,36 @@
 
   {#if errorMessage}
     <div
-      class="rounded-2xl border border-red-100 bg-red-50/80 px-6 py-4 text-sm text-red-700"
+      class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm"
       role="alert"
     >
-      <p class="font-semibold">Algo deu errado</p>
-      <p>{errorMessage}</p>
+      <p class="font-semibold text-red-900">Erro</p>
+      <p class="mt-1 text-red-700">{errorMessage}</p>
     </div>
   {/if}
 
-  <section class="rounded-2xl bg-white/80 p-4 shadow-sm">
-    <p class="text-sm font-medium text-slate-700">Vaga (opcional)</p>
-    <div class="mt-3 grid gap-4 md:grid-cols-2">
+  <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+    <p class="text-sm font-semibold text-slate-900">Vaga (opcional)</p>
+    <div class="mt-4 grid gap-4 md:grid-cols-2">
       <div>
-        <label for="job-text" class="text-xs font-semibold text-slate-500"
+        <label for="job-text" class="block text-xs font-medium text-slate-700"
           >Descrição da vaga (texto)</label
         >
         <textarea
           id="job-text"
-          class="mt-1 w-full rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-700 outline-none focus:ring-2 focus:ring-primary-200"
+          class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-200"
           rows="4"
           bind:value={jobText}
           placeholder="Cole aqui a descrição da vaga..."
         ></textarea>
       </div>
       <div>
-        <label for="job-file" class="text-xs font-semibold text-slate-500"
+        <label for="job-file" class="block text-xs font-medium text-slate-700"
           >Arquivo da vaga (.txt)</label
         >
         <input
           id="job-file"
-          class="mt-1 w-full rounded-xl border border-slate-200 bg-white p-2 text-sm text-slate-700 outline-none file:mr-3 file:rounded-lg file:border-0 file:bg-primary-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-primary-700"
+          class="mt-2 w-full rounded-lg border border-slate-300 bg-white text-sm text-slate-900 file:mr-3 file:rounded-md file:border-0 file:bg-primary-600 file:px-4 file:py-2 file:text-sm file:font-medium file:text-black hover:file:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
           type="file"
           accept=".txt,text/plain"
           on:change={(e) => {
@@ -199,7 +199,7 @@
           }}
         />
         {#if jobFile}
-          <p class="mt-1 text-xs text-slate-500">Selecionado: {jobFile.name}</p>
+          <p class="mt-2 text-xs text-slate-600">📄 {jobFile.name}</p>
         {/if}
       </div>
     </div>
@@ -225,7 +225,7 @@
         on:sort={(event) => handleSort(event.detail as SortKey)}
       />
 
-      <div class="grid gap-6 md:grid-cols-2">
+      <div class="grid gap-5 md:grid-cols-2">
         {#each sortedResults as candidate (candidate.candidate_name)}
           <CandidateCard {candidate} />
         {/each}
@@ -233,10 +233,3 @@
     </section>
   {/if}
 </main>
-
-<style lang="postcss">
-  @reference "tailwindcss";
-  .rounded-4xl {
-    border-radius: 2.25rem;
-  }
-</style>

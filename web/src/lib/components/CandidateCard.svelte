@@ -8,82 +8,84 @@
 </script>
 
 <article
-  class="rounded-3xl border border-slate-100 bg-white/90 p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+  class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md"
   transition:fade
 >
-  <header class="flex items-center justify-between">
-    <div>
-      <p class="text-xs uppercase tracking-widest text-slate-400">
+  <header class="flex items-start justify-between gap-4">
+    <div class="flex-1">
+      <p class="text-xs font-medium uppercase tracking-wider text-slate-400">
         Posição #{candidate.ranking_position}
       </p>
-      <h3 class="text-xl font-semibold text-slate-800">
+      <h3 class="mt-1 text-lg font-semibold text-slate-900">
         {candidate.candidate_name}
       </h3>
     </div>
-    <div class="text-right">
-      <p class="text-xs font-semibold text-slate-500">Match</p>
-      <p class="text-3xl font-bold text-primary-600">
-        {normalizedScore.toFixed(0)}<span class="text-base">%</span>
+    <div class="flex flex-col items-end">
+      <p class="text-xs font-medium text-slate-500">Match</p>
+      <p class="text-2xl font-bold text-primary-600">
+        {normalizedScore.toFixed(0)}<span class="text-sm">%</span>
       </p>
     </div>
   </header>
 
   <div class="mt-4">
     <div
-      class="flex items-center justify-between text-xs font-semibold text-slate-500"
+      class="flex items-center justify-between text-xs font-medium text-slate-600"
     >
-      <span>Compatibilidade com a vaga</span>
+      <span>Compatibilidade</span>
       <span>{normalizedScore.toFixed(0)}%</span>
     </div>
-    <div class="mt-1 h-2 w-full overflow-hidden rounded-full bg-slate-100">
+    <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-100">
       <div
-        class="h-full rounded-full bg-linear-to-r from-primary-400 via-primary-500 to-primary-600"
+        class="h-full rounded-full bg-gradient-to-r from-primary-500 to-primary-600 transition-all"
         style={`width:${normalizedScore}%`}
       ></div>
     </div>
   </div>
 
-  <div class="mt-5 grid gap-4 md:grid-cols-2">
+  <div class="mt-6 grid gap-4 md:grid-cols-2">
     <section>
-      <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+      <p class="text-xs font-medium uppercase tracking-wide text-slate-500">
         Hard skills
       </p>
-      <div class="mt-2 flex flex-wrap gap-2">
+      <div class="mt-2 flex flex-wrap gap-1.5">
         {#if candidate.hard_skills.length}
           {#each candidate.hard_skills as skill}
             <span
-              class="rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700"
+              class="rounded-lg bg-primary-50 px-2.5 py-1 text-xs font-medium text-primary-700"
               >{skill}</span
             >
           {/each}
         {:else}
-          <span class="text-sm text-slate-400">Nenhuma identificada</span>
+          <span class="text-xs text-slate-400">Nenhuma identificada</span>
         {/if}
       </div>
     </section>
     <section>
-      <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">
+      <p class="text-xs font-medium uppercase tracking-wide text-slate-500">
         Soft skills
       </p>
-      <div class="mt-2 flex flex-wrap gap-2">
+      <div class="mt-2 flex flex-wrap gap-1.5">
         {#if candidate.soft_skills.length}
           {#each candidate.soft_skills as skill}
             <span
-              class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700"
+              class="rounded-lg bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700"
               >{skill}</span
             >
           {/each}
         {:else}
-          <span class="text-sm text-slate-400">Nenhuma identificada</span>
+          <span class="text-xs text-slate-400">Nenhuma identificada</span>
         {/if}
       </div>
     </section>
   </div>
 
-  <section class="mt-5 rounded-2xl bg-slate-50/80 p-4 text-sm text-slate-600">
-    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">
+  <section class="mt-6 rounded-xl bg-slate-50 p-4">
+    <p class="text-xs font-medium uppercase tracking-wide text-slate-500">
       Justificativa
     </p>
-    <p class="mt-2 leading-relaxed">{candidate.explanation}</p>
+    <p class="mt-2 text-sm leading-relaxed text-slate-600">
+      {candidate.explanation}
+    </p>
   </section>
 </article>
