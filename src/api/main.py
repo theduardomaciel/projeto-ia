@@ -34,10 +34,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 # Criar aplicação FastAPI
 app = FastAPI(
     title="Sistema de Apoio ao Recrutamento Inteligente",
-    description=(
-        "API para análise automatizada de currículos usando IA. "
-        "Projeto acadêmico - UFAL IA 2025.1"
-    ),
+    description=("API para análise automatizada de currículos usando IA. "),
     version="1.0.0",
     lifespan=lifespan,
 )

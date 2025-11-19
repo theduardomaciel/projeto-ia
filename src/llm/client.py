@@ -407,6 +407,12 @@ def get_default_llm() -> LLMClient:
     Raises:
         RuntimeError: Se nenhum provedor configurado
     """
+
+    # Carrega variáveis de ambiente
+    from dotenv import load_dotenv
+
+    load_dotenv()
+
     default_provider = os.getenv("DEFAULT_LLM_PROVIDER", "gemini").lower()
 
     # Tenta usar provedor padrão
