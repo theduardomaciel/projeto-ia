@@ -121,37 +121,45 @@
 
 <main class="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
   <section
-    class="relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-8"
+    class="relative overflow-hidden rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-sm ring-1 ring-slate-200 dark:ring-slate-700 sm:p-8"
   >
     <div
-      class="absolute inset-0 bg-linear-to-br from-primary-50 via-white to-slate-50 opacity-40"
+      class="absolute inset-0 bg-linear-to-br from-primary-50 via-white to-slate-50 dark:from-slate-800 dark:via-slate-900 dark:to-slate-800 opacity-40"
     ></div>
     <div
       class="relative flex flex-col gap-6 md:flex-row md:items-start md:justify-between"
     >
       <div class="space-y-2 flex-1">
         <p
-          class="text-xs font-semibold uppercase tracking-wider text-primary-600"
+          class="text-xs font-semibold uppercase tracking-wider text-primary-600 dark:text-primary-400"
         >
           Sistema de apoio ao recrutamento
         </p>
-        <h1 class="text-2xl font-bold text-slate-900 sm:text-3xl">
+        <h1
+          class="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl"
+        >
           Análise inteligente de currículos
         </h1>
-        <p class="max-w-2xl text-sm text-slate-600 leading-relaxed">
+        <p
+          class="max-w-2xl text-sm text-slate-600 dark:text-slate-300 leading-relaxed"
+        >
           Carregue currículos em PDF, DOCX ou TXT, envie para o backend e
           visualize o ranking com hard skills, soft skills e justificativas
           geradas pelo pipeline de IA.
         </p>
       </div>
       <div
-        class="shrink-0 rounded-xl border border-primary-200 bg-primary-50 px-4 py-3 text-sm"
+        class="shrink-0 rounded-xl border border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/30 px-4 py-3 text-sm"
       >
-        <p class="font-semibold text-primary-900">Status</p>
-        <p class="mt-1 text-primary-700">{statusMessage}</p>
+        <p class="font-semibold text-primary-900 dark:text-primary-200">
+          Status
+        </p>
+        <p class="mt-1 text-primary-700 dark:text-primary-300">
+          {statusMessage}
+        </p>
         {#if isUploading}
           <button
-            class="mt-2 text-xs font-medium text-primary-700 underline hover:text-primary-900"
+            class="mt-2 text-xs font-medium text-primary-700 dark:text-primary-300 underline hover:text-primary-900 dark:hover:text-primary-100"
             on:click={cancelUpload}>Cancelar envio</button
           >
         {/if}
@@ -161,36 +169,44 @@
 
   {#if errorMessage}
     <div
-      class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm"
+      class="rounded-xl border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30 px-4 py-3 text-sm"
       role="alert"
     >
-      <p class="font-semibold text-red-900">Erro</p>
-      <p class="mt-1 text-red-700">{errorMessage}</p>
+      <p class="font-semibold text-red-900 dark:text-red-200">Erro</p>
+      <p class="mt-1 text-red-700 dark:text-red-300">{errorMessage}</p>
     </div>
   {/if}
 
-  <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-    <p class="text-sm font-semibold text-slate-900">Vaga (opcional)</p>
+  <section
+    class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm"
+  >
+    <p class="text-sm font-semibold text-slate-900 dark:text-white">
+      Vaga (opcional)
+    </p>
     <div class="mt-4 grid gap-4 md:grid-cols-2">
       <div>
-        <label for="job-text" class="block text-xs font-medium text-slate-700"
+        <label
+          for="job-text"
+          class="block text-xs font-medium text-slate-700 dark:text-slate-300"
           >Descrição da vaga (texto)</label
         >
         <textarea
           id="job-text"
-          class="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-200"
+          class="mt-2 w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-2 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-800"
           rows="4"
           bind:value={jobText}
           placeholder="Cole aqui a descrição da vaga..."
         ></textarea>
       </div>
       <div>
-        <label for="job-file" class="block text-xs font-medium text-slate-700"
+        <label
+          for="job-file"
+          class="block text-xs font-medium text-slate-700 dark:text-slate-300"
           >Arquivo da vaga (.txt)</label
         >
         <input
           id="job-file"
-          class="mt-2 w-full rounded-lg border border-slate-300 bg-white text-sm text-slate-900 file:mr-3 file:rounded-md file:border-0 file:bg-primary-600 file:px-4 file:py-2 file:text-sm file:font-medium file:text-black hover:file:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
+          class="mt-2 w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white file:mr-3 file:rounded-md file:border-0 file:bg-primary-600 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-800"
           type="file"
           accept=".txt,text/plain"
           on:change={(e) => {
@@ -199,7 +215,9 @@
           }}
         />
         {#if jobFile}
-          <p class="mt-2 text-xs text-slate-600">📄 {jobFile.name}</p>
+          <p class="mt-2 text-xs text-slate-600 dark:text-slate-400">
+            📄 {jobFile.name}
+          </p>
         {/if}
       </div>
     </div>
