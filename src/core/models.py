@@ -70,8 +70,10 @@ class Candidate:
     parsed_at: datetime = field(default_factory=datetime.now)
 
     # Pontuação (preenchida pelo ScoringEngine)
-    score: float = 0.0
+    score: float = 0.0  # Score absoluto baseado em competências gerais
     score_breakdown: Dict[str, float] = field(default_factory=dict)
+    match_percentage: float = 0.0  # Percentual de match com requisitos da vaga (0-100)
+    match_breakdown: Dict[str, float] = field(default_factory=dict)
 
     # Justificativa (preenchida pelo ExplainabilityEngine)
     explanation: Optional[str] = None

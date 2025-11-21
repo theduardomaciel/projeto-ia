@@ -199,7 +199,9 @@ class AnalysisService:
                 candidate_name=candidate.name,
                 hard_skills=[skill.name for skill in candidate.hard_skills],
                 soft_skills=[skill.name for skill in candidate.soft_skills],
-                match_score=round(candidate.score, 2),
+                match_score=round(
+                    candidate.match_percentage, 2
+                ),  # Usar match_percentage ao invés de score
                 explanation=candidate.explanation or "Análise não disponível.",
                 ranking_position=position,
             )

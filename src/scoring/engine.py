@@ -156,10 +156,78 @@ class ScoringEngine:
         total_score = (level_score + relevance_bonus + completion_penalty) * weight
         return max(round(total_score, 2), 0.0)  # Não permitir negativo
 
+    def _calculate_match_percentage(
+        self, candidate: Candidate, job: JobProfile
+    ) -> tuple[float, Dict[str, float]]:
+        """Calcula percentual de match com os requisitos específicos da vaga.
+
+        Retorna: (match_percentage, breakdown)
+
+        Lógica:
+        - Requisitos obrigatórios (required): peso 1.0 cada
+        - Requisitos desejáveis (preferred): peso 0.6 cada
+        - Nice to have: peso 0.3 cada
+        - Match = (pontos obtidos / pontos máximos possíveis) * 100
+        """
+        if not job or not job.requirements:
+            return 0.0, {}
+
+        # Obter todas as skills do candidato (normalizadas)
+        candidate_skills = set(
+            skill.name.lower() for skill in candidate.get_all_skills()
+        )
+
+        # Calcular pontos obtidos e máximos possíveis
+        obtained_points = 0.0
+        max_points = 0.0
+        breakdown = {}
+
+        # Mapear importance para peso (do config)
+        importance_weights = self.config.get(
+            "requirement_importance",
+            {
+                "required": 1.0,
+                "preferred": 0.6,
+                "nice_to_have": 0.3,
+            },
+        )
+
+        for req in job.requirements:
+            req_skill_normalized = req.skill.lower()
+            importance_weight = importance_weights.get(req.importance, 1.0)
+
+            # Peso final do requisito
+            req_weight = importance_weight * req.weight
+            max_points += req_weight
+
+            # Verificar se candidato possui a skill
+            # Busca por match exato ou substring (mais flexível)
+            has_skill = False
+            for candidate_skill in candidate_skills:
+                if (
+                    req_skill_normalized in candidate_skill
+                    or candidate_skill in req_skill_normalized
+                ):
+                    has_skill = True
+                    break
+
+            if has_skill:
+                obtained_points += req_weight
+                breakdown[req.skill] = req_weight
+            else:
+                breakdown[req.skill] = 0.0
+
+        # Calcular percentual
+        match_percentage = (
+            (obtained_points / max_points * 100) if max_points > 0 else 0.0
+        )
+
+        return round(match_percentage, 2), breakdown
+
     def score_candidate(
         self, candidate: Candidate, job: Optional[JobProfile] = None
     ) -> Candidate:
-        """Pontua um candidato e preenche score e score_breakdown."""
+        """Pontua um candidato e preenche score (absoluto) e match_percentage (com vaga)."""
         # Hard skills
         hard_weight = self.category_weights.get("hard_skills", 0.6)
         hard_score, hard_breakdown = self._calculate_skills_score(
@@ -180,7 +248,7 @@ class ScoringEngine:
         edu_weight = self.category_weights.get("education", 0.05)
         edu_score = self._calculate_education_score(candidate, edu_weight, job)
 
-        # Score total
+        # Score total (absoluto)
         total = hard_score + soft_score + exp_score + edu_score
 
         candidate.score = round(total, 2)
@@ -192,6 +260,15 @@ class ScoringEngine:
             "hard_skills_detail": {k: round(v, 2) for k, v in hard_breakdown.items()},
             "soft_skills_detail": {k: round(v, 2) for k, v in soft_breakdown.items()},
         }
+
+        # Calcular match percentage com a vaga (se fornecida)
+        if job:
+            match_pct, match_brkdwn = self._calculate_match_percentage(candidate, job)
+            candidate.match_percentage = match_pct
+            candidate.match_breakdown = match_brkdwn
+        else:
+            candidate.match_percentage = 0.0
+            candidate.match_breakdown = {}
 
         # Log
         self._log_scoring(candidate)
@@ -207,9 +284,10 @@ class ScoringEngine:
                 fname = Path(candidate.file_path).name if candidate.file_path else "-"
                 hard = candidate.score_breakdown.get("hard_skills", 0)
                 soft = candidate.score_breakdown.get("soft_skills", 0)
+                match = candidate.match_percentage
                 f.write(
                     f"{ts}\tname={candidate.name}\tfile={fname}\t"
-                    f"score={candidate.score}\thard={hard}\tsoft={soft}\n"
+                    f"score={candidate.score}\tmatch={match}%\thard={hard}\tsoft={soft}\n"
                 )
         except Exception:
             pass

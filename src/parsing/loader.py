@@ -173,16 +173,19 @@ class ParserService:
         normalizer: TextNormalizer | None = None,
         extract_experience: bool = True,
         extract_education: bool = True,
+        extract_requirements: bool = True,
         llm_client=None,
     ) -> None:
         self.loader = loader or FileLoader()
         self.normalizer = normalizer or TextNormalizer()
         self.extract_experience = extract_experience
         self.extract_education = extract_education
+        self.extract_requirements = extract_requirements
 
         # Inicializar extractors se habilitados
         self.exp_extractor = None
         self.edu_extractor = None
+        self.req_extractor = None
 
         if extract_experience and ExperienceExtractor:
             self.exp_extractor = ExperienceExtractor(llm_client=llm_client)
@@ -190,9 +193,19 @@ class ParserService:
         if extract_education and EducationExtractor:
             self.edu_extractor = EducationExtractor(llm_client=llm_client)
 
+        if extract_requirements:
+            # Import aqui para evitar ciclos
+            from src.parsing.requirements_extractor import RequirementsExtractor
+
+            self.req_extractor = RequirementsExtractor()
+
     def parse(self, job_path: str | Path, cvs_dir: str | Path):
         job = self.loader.load_job(job_path)
         candidates = self.loader.load_candidates(cvs_dir)
+
+        # Extrair requisitos da vaga
+        if self.req_extractor:
+            job = self.req_extractor.extract_from_job(job)
 
         # Normalizar texto e extrair informações estruturadas
         for cand in candidates:

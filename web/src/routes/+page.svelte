@@ -180,9 +180,7 @@
   <section
     class="rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-5 shadow-sm"
   >
-    <p class="text-sm font-semibold text-neutral-900 dark:text-white">
-      Vaga (opcional)
-    </p>
+    <p class="text-sm font-semibold text-neutral-900 dark:text-white">Vaga</p>
     <div class="mt-4 grid gap-4 md:grid-cols-2">
       <div>
         <label
