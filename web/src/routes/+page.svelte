@@ -3,8 +3,13 @@
   import CandidateCard from "$lib/components/CandidateCard.svelte";
   import ResultsTable from "$lib/components/ResultsTable.svelte";
   import EmptyState from "$lib/components/EmptyState.svelte";
-  import { analyzeResumes, checkHealth } from "$lib/api";
-  import type { CandidateResult, SortDirection, SortKey } from "$lib/types";
+  import { analyzeResumes, checkHealth, getSkills } from "$lib/api";
+  import type {
+    CandidateResult,
+    SortDirection,
+    SortKey,
+    StructuredJob,
+  } from "$lib/types";
   import { onMount } from "svelte";
 
   let selectedFiles: File[] = [];
@@ -20,15 +25,85 @@
   // Job (optional)
   let jobText: string = "";
   let jobFile: File | null = null;
+  let mode: "upload" | "structured" = "upload";
+  let hardSkillsSuggestions: string[] = [];
+  let softSkillsSuggestions: string[] = [];
 
   onMount(async () => {
+    // Health
     try {
       const ok = await checkHealth();
       statusMessage = ok ? "Backend online" : "Backend não respondeu";
     } catch {
       statusMessage = "Status do backend desconhecido";
     }
+
+    // Skills
+    try {
+      const { hard_skills, soft_skills } = await getSkills();
+      hardSkillsSuggestions = hard_skills;
+      softSkillsSuggestions = soft_skills;
+    } catch (e) {
+      console.warn("Falha ao carregar skills", e);
+    }
   });
+  async function handleStructuredSubmit(
+    e: CustomEvent<{
+      area: string;
+      position: string;
+      seniority: string;
+      hardSkills: string[];
+      softSkills: string[];
+      additionalInfo: string;
+    }>,
+  ) {
+    if (!selectedFiles.length) {
+      errorMessage = "Selecione pelo menos um currículo.";
+      return;
+    }
+    errorMessage = null;
+    statusMessage = "Processando vaga estruturada...";
+    isUploading = true;
+    uploadProgress = 10;
+    abortController = new AbortController();
+    const progressTimer = setInterval(() => {
+      uploadProgress = Math.min(uploadProgress + 5, 85);
+    }, 300);
+    try {
+      const structured: StructuredJob = {
+        area: e.detail.area.trim(),
+        position: e.detail.position.trim(),
+        seniority: e.detail.seniority,
+        hard_skills: e.detail.hardSkills,
+        soft_skills: e.detail.softSkills,
+        additional_info: e.detail.additionalInfo?.trim() || "",
+      };
+      const response = await analyzeResumes(
+        selectedFiles,
+        { structuredJob: structured },
+        abortController.signal,
+      );
+      results = response
+        .map((item, index) => ({
+          ...item,
+          ranking_position: item.ranking_position ?? index + 1,
+        }))
+        .sort((a, b) => a.ranking_position - b.ranking_position);
+      statusMessage = `Última atualização: ${new Date().toLocaleTimeString()}`;
+      uploadProgress = 100;
+    } catch (error) {
+      console.error(error);
+      const message =
+        error instanceof Error ? error.message : "Erro desconhecido";
+      errorMessage = message;
+      statusMessage = "Não foi possível concluir a análise estruturada.";
+    } finally {
+      isUploading = false;
+      clearInterval(progressTimer);
+      abortController = null;
+      setTimeout(() => (uploadProgress = 0), 800);
+    }
+  }
 
   $: sortedResults = [...results].sort((a, b) => {
     const multiplier = sortDirection === "asc" ? 1 : -1;
@@ -177,57 +252,65 @@
     </div>
   {/if}
 
-  <section
-    class="rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-5 shadow-sm"
-  >
-    <p class="text-sm font-semibold text-neutral-900 dark:text-white">Vaga</p>
-    <div class="mt-4 grid gap-4 md:grid-cols-2">
-      <div>
-        <label
-          for="job-text"
-          class="block text-xs font-medium text-neutral-700 dark:text-neutral-300"
-          >Descrição da vaga (texto)</label
-        >
-        <textarea
-          id="job-text"
-          class="mt-2 w-full rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 px-3 py-2 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-800"
-          rows="4"
-          bind:value={jobText}
-          placeholder="Cole aqui a descrição da vaga..."
-        ></textarea>
+  {#if mode === "upload"}
+    <section
+      class="rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 p-5 shadow-sm"
+    >
+      <p class="text-sm font-semibold text-neutral-900 dark:text-white">
+        Vaga (texto ou arquivo)
+      </p>
+      <div class="mt-4 grid gap-4 md:grid-cols-2">
+        <div>
+          <label
+            for="job-text"
+            class="block text-xs font-medium text-neutral-700 dark:text-neutral-300"
+            >Descrição da vaga (texto)</label
+          >
+          <textarea
+            id="job-text"
+            class="mt-2 w-full rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 px-3 py-2 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-800"
+            rows="4"
+            bind:value={jobText}
+            placeholder="Cole aqui a descrição da vaga..."
+          ></textarea>
+        </div>
+        <div>
+          <label
+            for="job-file"
+            class="block text-xs font-medium text-neutral-700 dark:text-neutral-300"
+            >Arquivo da vaga (.txt)</label
+          >
+          <input
+            id="job-file"
+            class="mt-2 w-full rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-sm text-neutral-900 dark:text-white file:mr-3 file:rounded-md file:border-0 file:bg-primary-600 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-800"
+            type="file"
+            accept=".txt,text/plain"
+            on:change={(e) => {
+              const f = (e.target as HTMLInputElement).files?.[0] || null;
+              jobFile = f;
+            }}
+          />
+          {#if jobFile}
+            <p class="mt-2 text-xs text-neutral-600 dark:text-neutral-400">
+              📄 {jobFile.name}
+            </p>
+          {/if}
+        </div>
       </div>
-      <div>
-        <label
-          for="job-file"
-          class="block text-xs font-medium text-neutral-700 dark:text-neutral-300"
-          >Arquivo da vaga (.txt)</label
-        >
-        <input
-          id="job-file"
-          class="mt-2 w-full rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-sm text-neutral-900 dark:text-white file:mr-3 file:rounded-md file:border-0 file:bg-primary-600 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-800"
-          type="file"
-          accept=".txt,text/plain"
-          on:change={(e) => {
-            const f = (e.target as HTMLInputElement).files?.[0] || null;
-            jobFile = f;
-          }}
-        />
-        {#if jobFile}
-          <p class="mt-2 text-xs text-neutral-600 dark:text-neutral-400">
-            📄 {jobFile.name}
-          </p>
-        {/if}
-      </div>
-    </div>
-  </section>
+    </section>
+  {/if}
 
   <UploadPanel
+    bind:mode
     {isUploading}
     progress={uploadProgress}
     files={selectedFiles}
+    {hardSkillsSuggestions}
+    {softSkillsSuggestions}
     on:select={(event) => upsertFiles(event.detail as File[])}
     on:remove={(event) => removeFile(event.detail as number)}
     on:upload={handleUpload}
+    on:structuredSubmit={handleStructuredSubmit}
   />
 
   {#if !results.length}

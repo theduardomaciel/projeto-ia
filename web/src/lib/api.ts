@@ -1,5 +1,5 @@
 import { env } from '$env/dynamic/public';
-import type { CandidateResult } from '$lib/types';
+import type { CandidateResult, StructuredJob } from '$lib/types';
 
 // API base URL: use PUBLIC_API_BASE_URL from .env or default to http://localhost:8000
 const API_BASE_URL = env.PUBLIC_API_BASE_URL || 'http://localhost:8000';
@@ -31,19 +31,27 @@ export async function checkHealth(signal?: AbortSignal): Promise<boolean> {
  * await analyzeResumes(files, { jobText, jobFile });
  * ```
  */
+export interface AnalyzeOptions {
+  jobText?: string;
+  jobFile?: File;
+  structuredJob?: StructuredJob; // modo avançado
+}
+
 export async function analyzeResumes(
   files: File[],
-  jobOrOptions?: string | { jobText?: string; jobFile?: File },
+  options?: AnalyzeOptions,
   signal?: AbortSignal
 ): Promise<CandidateResult[]> {
   const formData = new FormData();
   files.forEach((file) => formData.append('resumes', file));
 
-  if (typeof jobOrOptions === 'string' && jobOrOptions) {
-    formData.append('job', jobOrOptions);
-  } else if (jobOrOptions && typeof jobOrOptions === 'object') {
-    if (jobOrOptions.jobFile) formData.append('job_file', jobOrOptions.jobFile);
-    if (jobOrOptions.jobText) formData.append('job_text', jobOrOptions.jobText);
+  if (options) {
+    if (options.jobFile) formData.append('job_file', options.jobFile);
+    if (options.jobText) formData.append('job_text', options.jobText);
+    if (options.structuredJob) {
+      // Enviar JSON serializado
+      formData.append('structured_job', JSON.stringify(options.structuredJob));
+    }
   }
 
   try {
@@ -63,4 +71,15 @@ export async function analyzeResumes(
   } catch (err) {
     throw err instanceof Error ? err : new Error('Falha ao analisar currículos');
   }
+}
+
+/**
+ * Carrega lista de skills (hard e soft) do backend.
+ */
+export async function getSkills(signal?: AbortSignal): Promise<{ hard_skills: string[]; soft_skills: string[] }> {
+  const response = await fetch(buildUrl('/api/skills'), { method: 'GET', signal });
+  if (!response.ok) {
+    throw new Error('Falha ao carregar lista de skills');
+  }
+  return response.json();
 }

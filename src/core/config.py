@@ -22,6 +22,25 @@ def config_dir() -> Path:
     return project_root() / "data" / "config"
 
 
+def data_dir() -> Path:
+    """Retorna diretório base de dados (data/)."""
+    return project_root() / "data"
+
+
+# Constante exportada para uso em módulos que precisam construir caminhos.
+DATA_DIR = data_dir()
+
+__all__ = [
+    "project_root",
+    "config_dir",
+    "data_dir",
+    "DATA_DIR",
+    "load_skills",
+    "load_weights",
+    "load_prompt_templates",
+]
+
+
 def _read_json(path: Path) -> Dict[str, Any]:
     with path.open("r", encoding="utf-8") as f:
         return json.load(f)

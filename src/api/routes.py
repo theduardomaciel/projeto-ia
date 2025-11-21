@@ -4,16 +4,18 @@ Rotas da API - endpoints para análise de currículos.
 
 from __future__ import annotations
 
+import json
 import logging
 import tempfile
 from pathlib import Path
-from typing import List, Optional
+from typing import Dict, List, Optional
 
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, Body, File, Form, HTTPException, UploadFile
 from fastapi.responses import JSONResponse
 
-from src.api.schemas import AnalyzeResponse, CandidateResult
+from src.api.schemas import AnalyzeResponse, CandidateResult, StructuredJobRequest
 from src.api.service import AnalysisService
+from src.core.config import DATA_DIR
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +39,54 @@ async def api_health():
     return {"status": "healthy", "api": "recruitment-pipeline"}
 
 
+@router.get("/skills")
+async def get_skills() -> Dict[str, List[str]]:
+    """
+    Retorna listas de hard skills e soft skills disponíveis no sistema.
+
+    **Retorna:**
+    - `hard_skills`: Lista de todas as hard skills cadastradas
+    - `soft_skills`: Lista de todas as soft skills cadastradas
+    """
+    try:
+        skills_path = DATA_DIR / "config" / "skills.json"
+
+        if not skills_path.exists():
+            logger.warning(f"skills.json não encontrado em {skills_path}")
+            return {"hard_skills": [], "soft_skills": []}
+
+        with open(skills_path, encoding="utf-8") as f:
+            skills_data = json.load(f)
+
+        # Coletar todas as hard skills de todas as categorias
+        hard_skills = []
+        for category_skills in skills_data.get("hard_skills", {}).values():
+            if isinstance(category_skills, list):
+                hard_skills.extend(category_skills)
+
+        # Coletar todas as soft skills de todas as categorias
+        soft_skills = []
+        for category_skills in skills_data.get("soft_skills", {}).values():
+            if isinstance(category_skills, list):
+                soft_skills.extend(category_skills)
+
+        # Remover duplicatas e ordenar
+        hard_skills = sorted(set(hard_skills))
+        soft_skills = sorted(set(soft_skills))
+
+        logger.info(
+            f"✅ Skills carregadas: {len(hard_skills)} hard, {len(soft_skills)} soft"
+        )
+
+        return {"hard_skills": hard_skills, "soft_skills": soft_skills}
+
+    except Exception as e:
+        logger.error(f"❌ Erro ao carregar skills: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500, detail=f"Erro ao carregar skills: {str(e)}"
+        )
+
+
 @router.post("/analyze", response_model=AnalyzeResponse)
 async def analyze_candidates(
     resumes: List[UploadFile] = File(
@@ -46,14 +96,20 @@ async def analyze_candidates(
     job_file: Optional[UploadFile] = File(
         None, description="Arquivo com descrição da vaga"
     ),
+    structured_job: Optional[str] = Form(
+        None, description="Vaga estruturada em JSON (modo avançado)"
+    ),
 ) -> AnalyzeResponse:
     """
     Analisa currículos em relação a uma vaga e retorna ranking de candidatos.
 
     **Parâmetros:**
     - `resumes`: Lista de arquivos de currículos (texto ou PDF)
-    - `job_text`: Descrição da vaga como string (opcional se job_file fornecido)
-    - `job_file`: Arquivo com descrição da vaga (opcional se job_text fornecido)
+    - `job_text`: Descrição da vaga como string (opcional)
+    - `job_file`: Arquivo com descrição da vaga (opcional)
+    - `structured_job`: Vaga estruturada em JSON no formato StructuredJobRequest (modo avançado)
+
+    **Nota:** Forneça job_text, job_file OU structured_job
 
     **Retorna:**
     - Lista de candidatos ranqueados com pontuações e justificativas
@@ -64,10 +120,10 @@ async def analyze_candidates(
     if not resumes:
         raise HTTPException(status_code=400, detail="Nenhum currículo fornecido")
 
-    if not job_text and not job_file:
+    if not job_text and not job_file and not structured_job:
         raise HTTPException(
             status_code=400,
-            detail="Forneça job_text ou job_file com a descrição da vaga",
+            detail="Forneça job_text, job_file ou structured_job com a descrição da vaga",
         )
 
     try:
@@ -105,7 +161,51 @@ async def analyze_candidates(
             # Processar descrição da vaga
             job_path: Optional[Path] = None
 
-            if job_file:
+            if structured_job:
+                # Modo avançado: converter vaga estruturada em texto
+                try:
+                    job_data = json.loads(structured_job)
+                    structured = StructuredJobRequest(**job_data)
+
+                    # Gerar descrição textual da vaga estruturada
+                    job_description = f"""Vaga: {structured.position}
+Área: {structured.area}
+Senioridade: {structured.seniority}
+
+Hard Skills Obrigatórias:
+{chr(10).join(f'- {skill}' for skill in structured.hard_skills)}
+"""
+
+                    if structured.soft_skills:
+                        job_description += f"""
+Soft Skills Desejadas:
+{chr(10).join(f'- {skill}' for skill in structured.soft_skills)}
+"""
+
+                    if structured.additional_info:
+                        job_description += f"""
+Informações Adicionais:
+{structured.additional_info}
+"""
+
+                    job_path = temp_path / "job_description.txt"
+                    job_path.write_text(job_description, encoding="utf-8")
+                    logger.debug(
+                        f"   ✓ Vaga estruturada convertida ({len(structured.hard_skills)} hard skills, {len(structured.soft_skills)} soft skills)"
+                    )
+
+                except json.JSONDecodeError as e:
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"JSON inválido em structured_job: {str(e)}",
+                    )
+                except Exception as e:
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"Erro ao processar vaga estruturada: {str(e)}",
+                    )
+
+            elif job_file:
                 job_path = temp_path / "job_description.txt"
                 content = await job_file.read()
                 job_path.write_bytes(content)
