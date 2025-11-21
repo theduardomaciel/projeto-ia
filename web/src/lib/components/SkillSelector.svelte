@@ -13,17 +13,16 @@
   let filteredSuggestions: string[] = [];
   let highlightedIndex = -1;
 
+  // Sempre prepara lista de sugestões (todas quando input vazio)
   $: {
+    const base = suggestions.filter((skill) => !selected.includes(skill));
     if (inputValue.trim()) {
       const searchTerm = inputValue.toLowerCase();
-      filteredSuggestions = suggestions
-        .filter((skill) => !selected.includes(skill))
+      filteredSuggestions = base
         .filter((skill) => skill.toLowerCase().includes(searchTerm))
-        .slice(0, 10);
-      showDropdown = true;
+        .slice(0, 20);
     } else {
-      filteredSuggestions = [];
-      showDropdown = false;
+      filteredSuggestions = base.slice(0, 50); // mostra um subconjunto amplo
     }
   }
 
@@ -94,7 +93,7 @@
       type="text"
       bind:value={inputValue}
       on:keydown={handleKeydown}
-      on:focus={() => (showDropdown = inputValue.trim().length > 0)}
+      on:focus={() => (showDropdown = true)}
       on:blur={handleBlur}
       {placeholder}
       autocomplete="off"
@@ -155,4 +154,3 @@
     </div>
   {/if}
 </div>
-}

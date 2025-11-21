@@ -1,4 +1,4 @@
-export type SortKey = 'ranking_position' | 'match_score' | 'candidate_name';
+export type SortKey = 'ranking_position' | 'match_score' | 'candidate_name' | 'global_score' | 'final_score';
 export type SortDirection = 'asc' | 'desc';
 
 export interface CandidateResult {
@@ -8,6 +8,8 @@ export interface CandidateResult {
   match_score: number;
   explanation: string;
   ranking_position: number;
+  global_score?: number;
+  final_score?: number; // calculado no frontend
 }
 
 export interface AnalyzeResponse {

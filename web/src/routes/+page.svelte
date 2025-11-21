@@ -20,6 +20,7 @@
   let errorMessage: string | null = null;
   let sortKey: SortKey = "ranking_position";
   let sortDirection: SortDirection = "asc";
+  let sortCriterion: "ranking" | "match" | "global" | "final" = "ranking";
   let abortController: AbortController | null = null;
 
   // Job (optional)
@@ -47,70 +48,25 @@
       console.warn("Falha ao carregar skills", e);
     }
   });
-  async function handleStructuredSubmit(
-    e: CustomEvent<{
-      area: string;
-      position: string;
-      seniority: string;
-      hardSkills: string[];
-      softSkills: string[];
-      additionalInfo: string;
-    }>,
-  ) {
-    if (!selectedFiles.length) {
-      errorMessage = "Selecione pelo menos um currículo.";
-      return;
-    }
-    errorMessage = null;
-    statusMessage = "Processando vaga estruturada...";
-    isUploading = true;
-    uploadProgress = 10;
-    abortController = new AbortController();
-    const progressTimer = setInterval(() => {
-      uploadProgress = Math.min(uploadProgress + 5, 85);
-    }, 300);
-    try {
-      const structured: StructuredJob = {
-        area: e.detail.area.trim(),
-        position: e.detail.position.trim(),
-        seniority: e.detail.seniority,
-        hard_skills: e.detail.hardSkills,
-        soft_skills: e.detail.softSkills,
-        additional_info: e.detail.additionalInfo?.trim() || "",
-      };
-      const response = await analyzeResumes(
-        selectedFiles,
-        { structuredJob: structured },
-        abortController.signal,
-      );
-      results = response
-        .map((item, index) => ({
-          ...item,
-          ranking_position: item.ranking_position ?? index + 1,
-        }))
-        .sort((a, b) => a.ranking_position - b.ranking_position);
-      statusMessage = `Última atualização: ${new Date().toLocaleTimeString()}`;
-      uploadProgress = 100;
-    } catch (error) {
-      console.error(error);
-      const message =
-        error instanceof Error ? error.message : "Erro desconhecido";
-      errorMessage = message;
-      statusMessage = "Não foi possível concluir a análise estruturada.";
-    } finally {
-      isUploading = false;
-      clearInterval(progressTimer);
-      abortController = null;
-      setTimeout(() => (uploadProgress = 0), 800);
-    }
-  }
 
-  $: sortedResults = [...results].sort((a, b) => {
+  // Calcula final_score dinamicamente (não altera objeto original no array results)
+  $: enrichedResults = results.map((r) => {
+    const global = r.global_score ?? 0;
+    const globalNormPct = Math.min(global / 10, 1) * 100; // assume escala 0-10
+    const final = 0.6 * r.match_score + 0.4 * globalNormPct;
+    return { ...r, final_score: final };
+  });
+
+  $: sortedResults = [...enrichedResults].sort((a, b) => {
     const multiplier = sortDirection === "asc" ? 1 : -1;
-    if (sortKey === "candidate_name") {
-      return a.candidate_name.localeCompare(b.candidate_name) * multiplier;
-    }
-    return (a[sortKey] - b[sortKey]) * multiplier;
+    let key: SortKey;
+    if (sortCriterion === "ranking") key = "ranking_position";
+    else if (sortCriterion === "match") key = "match_score";
+    else if (sortCriterion === "global") key = "global_score";
+    else key = "final_score";
+    const av = (a as any)[key] ?? 0;
+    const bv = (b as any)[key] ?? 0;
+    return (av - bv) * multiplier;
   });
 
   function upsertFiles(newFiles: File[]) {
@@ -129,7 +85,20 @@
     selectedFiles = selectedFiles.filter((_, i) => i !== index);
   }
 
-  async function handleUpload() {
+  async function handleUpload(
+    e:
+      | CustomEvent<{
+          structured?: {
+            area: string;
+            position: string;
+            seniority: string;
+            hardSkills: string[];
+            softSkills: string[];
+            additionalInfo: string;
+          };
+        }>
+      | undefined,
+  ) {
     if (!selectedFiles.length) {
       errorMessage = "Selecione pelo menos um currículo.";
       return;
@@ -146,15 +115,33 @@
     }, 300);
 
     try {
-      const options: { jobText?: string; jobFile?: File } = {};
-      if (jobFile) options.jobFile = jobFile;
-      if (jobText.trim()) options.jobText = jobText.trim();
-
-      const response = await analyzeResumes(
-        selectedFiles,
-        Object.keys(options).length ? options : undefined,
-        abortController.signal,
-      );
+      let response;
+      if (mode === "structured" && e?.detail?.structured) {
+        const structured: StructuredJob = {
+          area: e.detail.structured.area.trim(),
+          position: e.detail.structured.position.trim(),
+          seniority: e.detail.structured.seniority,
+          hard_skills: e.detail.structured.hardSkills,
+          soft_skills: e.detail.structured.softSkills,
+          additional_info: e.detail.structured.additionalInfo?.trim() || "",
+        };
+        statusMessage = "Processando vaga estruturada...";
+        response = await analyzeResumes(
+          selectedFiles,
+          { structuredJob: structured },
+          abortController.signal,
+        );
+      } else {
+        const options: { jobText?: string; jobFile?: File } = {};
+        if (jobFile) options.jobFile = jobFile;
+        if (jobText.trim()) options.jobText = jobText.trim();
+        statusMessage = "Processando vaga textual...";
+        response = await analyzeResumes(
+          selectedFiles,
+          Object.keys(options).length ? options : undefined,
+          abortController.signal,
+        );
+      }
       results = response
         .map((item, index) => ({
           ...item,
@@ -182,8 +169,12 @@
       sortDirection = sortDirection === "asc" ? "desc" : "asc";
     } else {
       sortKey = key;
-      sortDirection = key === "candidate_name" ? "asc" : "asc";
+      sortDirection = "asc";
     }
+    if (key === "ranking_position") sortCriterion = "ranking";
+    else if (key === "match_score") sortCriterion = "match";
+    else if (key === "global_score") sortCriterion = "global";
+    else if (key === "final_score") sortCriterion = "final";
   }
 
   function cancelUpload() {
@@ -310,7 +301,6 @@
     on:select={(event) => upsertFiles(event.detail as File[])}
     on:remove={(event) => removeFile(event.detail as number)}
     on:upload={handleUpload}
-    on:structuredSubmit={handleStructuredSubmit}
   />
 
   {#if !results.length}
@@ -326,7 +316,7 @@
 
       <div class="grid gap-5 md:grid-cols-2">
         {#each sortedResults as candidate (candidate.candidate_name)}
-          <CandidateCard {candidate} />
+          <CandidateCard {candidate} {sortCriterion} />
         {/each}
       </div>
     </section>

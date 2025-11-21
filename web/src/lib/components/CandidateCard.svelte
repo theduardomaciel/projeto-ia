@@ -5,6 +5,35 @@
   export let candidate: CandidateResult;
 
   $: normalizedScore = Math.min(100, Math.max(0, candidate.match_score));
+  export let sortCriterion: "ranking" | "match" | "global" | "final" = "match";
+
+  // Deriva label e valor baseado no sortCriterion
+  let metricLabel: string;
+  let metricValue: number | null = null;
+
+  $: {
+    if (sortCriterion === "ranking") {
+      metricLabel = "Ranking";
+      metricValue = candidate.ranking_position ?? null;
+    } else if (sortCriterion === "match") {
+      metricLabel = "Match";
+      metricValue = candidate.match_score ?? null;
+    } else if (sortCriterion === "global") {
+      metricLabel = "Score Global";
+      metricValue = candidate.global_score ?? null;
+    } else if (sortCriterion === "final") {
+      metricLabel = "Score Combinado";
+      metricValue = candidate.final_score ?? null;
+    } else {
+      metricLabel = "";
+      metricValue = null;
+    }
+  }
+  // Formatação simples: se match, adicionar %; outros valores arredondar ou mostrar inteiro
+  $: if (metricValue !== null && sortCriterion === "match")
+    metricValue = Math.round(metricValue);
+  $: if (metricValue !== null && sortCriterion === "final")
+    metricValue = Math.round(metricValue * 100) / 100;
 </script>
 
 <article
@@ -23,12 +52,12 @@
       </h3>
     </div>
     <div class="flex flex-col items-end">
-      <p class="text-xs font-medium text-neutral-500 dark:text-neutral-400">
-        Match
-      </p>
-      <p class="text-2xl font-bold text-primary-600 dark:text-primary-400">
-        {normalizedScore.toFixed(0)}<span class="text-sm">%</span>
-      </p>
+      {#if metricLabel && metricValue !== null}
+        <span
+          class="rounded bg-primary-100 dark:bg-primary-900/30 px-2 py-0.5 text-xs font-medium text-primary-700 dark:text-primary-300"
+          >{metricLabel}: {metricValue}</span
+        >
+      {/if}
     </div>
   </header>
 
@@ -43,7 +72,7 @@
       class="mt-2 h-2 w-full overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-700"
     >
       <div
-        class="h-full rounded-full bg-gradient-to-r from-primary-500 to-primary-600 transition-all"
+        class="h-full rounded-full bg-linear-to-r from-primary-500 to-primary-600 transition-all"
         style={`width:${normalizedScore}%`}
       ></div>
     </div>

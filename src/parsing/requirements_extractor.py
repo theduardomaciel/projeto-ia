@@ -35,9 +35,12 @@ class RequirementsExtractor:
             for category, skills in hard_skills_dict.items():
                 self.known_hard_skills.update(s.lower() for s in skills)
 
-        self.known_soft_skills = set(
-            s.lower() for s in self.config.get("soft_skills", [])
-        )
+        # Soft skills aninhadas (mesma estrutura de hard_skills)
+        self.known_soft_skills = set()
+        soft_skills_dict = self.config.get("soft_skills", {})
+        if isinstance(soft_skills_dict, dict):
+            for category, skills in soft_skills_dict.items():
+                self.known_soft_skills.update(s.lower() for s in skills)
 
         # Padrões de seções
         self.section_patterns = {
@@ -109,6 +112,20 @@ class RequirementsExtractor:
         # Salvar última seção
         if current_section and current_lines:
             sections[current_section] = "\n".join(current_lines)
+
+        # Fallback: se nenhuma seção reconhecida, inferir lista de skills por linhas iniciando com '-'
+        if not sections:
+            bullet_skills = []
+            for raw_line in lines:
+                line = raw_line.strip()
+                if line.startswith("-"):
+                    # Remover '- ' e normalizar
+                    skill_token = line[1:].strip().lower()
+                    if skill_token:
+                        bullet_skills.append(skill_token)
+            if bullet_skills:
+                # Reconstruir texto de seção única para processamento posterior
+                sections["required"] = "\n".join(f"- {s}" for s in bullet_skills)
 
         return sections
 

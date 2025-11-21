@@ -204,6 +204,7 @@ class AnalysisService:
                 ),  # Usar match_percentage ao invés de score
                 explanation=candidate.explanation or "Análise não disponível.",
                 ranking_position=position,
+                global_score=round(candidate.score, 2),
             )
             results.append(result)
 

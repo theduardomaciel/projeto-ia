@@ -19,19 +19,28 @@
   const dispatch = createEventDispatcher<{
     select: File[];
     remove: number;
-    upload: void;
-    structuredSubmit: {
-      area: string;
-      position: string;
-      seniority: string;
-      hardSkills: string[];
-      softSkills: string[];
-      additionalInfo: string;
+    upload: {
+      structured?: {
+        area: string;
+        position: string;
+        seniority: string;
+        hardSkills: string[];
+        softSkills: string[];
+        additionalInfo: string;
+      };
     };
   }>();
 
   let dragActive = false;
   let errorMessage: string | null = null;
+  let structuredData: {
+    area: string;
+    position: string;
+    seniority: string;
+    hardSkills: string[];
+    softSkills: string[];
+    additionalInfo: string;
+  } | null = null;
 
   function handleFileSelection(list: FileList | null) {
     if (!list?.length) return;
@@ -114,14 +123,8 @@
       <JobForm
         {hardSkillsSuggestions}
         {softSkillsSuggestions}
-        on:submit={(e) => dispatch("structuredSubmit", e.detail)}
+        on:change={(e) => (structuredData = e.detail)}
       />
-      <div class="mt-6 h-px w-full bg-neutral-200 dark:bg-neutral-700"></div>
-      <p
-        class="mt-4 text-xs font-medium text-neutral-500 dark:text-neutral-400"
-      >
-        Envie os currículos abaixo para aplicar esta configuração.
-      </p>
     </div>
   {/if}
 
@@ -191,10 +194,16 @@
         </p>
         <button
           class="rounded-lg bg-primary-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          on:click={() => dispatch("upload")}
+          on:click={() =>
+            dispatch("upload", {
+              structured:
+                mode === "structured" && structuredData
+                  ? structuredData
+                  : undefined,
+            })}
           disabled={isUploading}
         >
-          {isUploading ? "Enviando..." : "Enviar agora"}
+          {isUploading ? "Processando..." : "Analisar"}
         </button>
       </div>
       <ul class="mt-3 space-y-2">

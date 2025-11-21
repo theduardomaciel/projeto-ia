@@ -67,6 +67,13 @@ class CandidateResult(BaseModel):
         ..., description="Justificativa da pontuação gerada por LLM"
     )
     ranking_position: int = Field(..., description="Posição no ranking (1-based)")
+    global_score: float | None = Field(
+        None, description="Score absoluto agregado (hard+soft+experience+education)"
+    )
+    final_score: float | None = Field(
+        None,
+        description="Score combinado calculado no frontend (ex: 0.6*match + 0.4*global_norm)",
+    )
 
     class Config:
         json_schema_extra = {
@@ -81,6 +88,8 @@ class CandidateResult(BaseModel):
                     "com Docker demonstra conhecimento em DevOps, um diferencial importante."
                 ),
                 "ranking_position": 1,
+                "global_score": 7.1,
+                "final_score": 0.6 * 87.5 + 0.4 * (7.1 / 10 * 100),
             }
         }
 

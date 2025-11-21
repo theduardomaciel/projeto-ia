@@ -167,26 +167,34 @@ async def analyze_candidates(
                     job_data = json.loads(structured_job)
                     structured = StructuredJobRequest(**job_data)
 
-                    # Gerar descrição textual da vaga estruturada
-                    job_description = f"""Vaga: {structured.position}
-Área: {structured.area}
-Senioridade: {structured.seniority}
+                    # Gerar descrição textual da vaga estruturada usando
+                    # cabeçalhos compatíveis com o RequirementsExtractor
+                    # (padrões: Requisitos Obrigatórios / Requisitos Desejáveis / Diferenciais)
+                    job_description_lines = [
+                        f"Vaga: {structured.position}",
+                        f"Área: {structured.area}",
+                        f"Senioridade: {structured.seniority}",
+                        "",
+                        "Requisitos Obrigatórios:",
+                    ]
 
-Hard Skills Obrigatórias:
-{chr(10).join(f'- {skill}' for skill in structured.hard_skills)}
-"""
+                    # Hard skills consideradas obrigatórias
+                    for skill in structured.hard_skills:
+                        job_description_lines.append(f"- {skill}")
 
                     if structured.soft_skills:
-                        job_description += f"""
-Soft Skills Desejadas:
-{chr(10).join(f'- {skill}' for skill in structured.soft_skills)}
-"""
+                        job_description_lines.append("")
+                        job_description_lines.append("Requisitos Desejáveis:")
+                        for skill in structured.soft_skills:
+                            job_description_lines.append(f"- {skill}")
 
                     if structured.additional_info:
-                        job_description += f"""
-Informações Adicionais:
-{structured.additional_info}
-"""
+                        job_description_lines.append("")
+                        job_description_lines.append("Diferenciais:")
+                        # Preserva texto adicional (pode conter skills extras)
+                        job_description_lines.append(structured.additional_info)
+
+                    job_description = "\n".join(job_description_lines) + "\n"
 
                     job_path = temp_path / "job_description.txt"
                     job_path.write_text(job_description, encoding="utf-8")

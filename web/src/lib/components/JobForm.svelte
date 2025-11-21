@@ -6,7 +6,7 @@
   export let softSkillsSuggestions: string[] = [];
 
   const dispatch = createEventDispatcher<{
-    submit: {
+    change: {
       area: string;
       position: string;
       seniority: string;
@@ -33,30 +33,18 @@
     { value: "lideranca", label: "Liderança" },
   ];
 
-  function handleSubmit() {
-    // Validações básicas
-    if (!area.trim() || !position.trim() || !seniority) {
-      alert("Por favor, preencha área, cargo e senioridade.");
-      return;
-    }
-
-    if (hardSkills.length === 0 && softSkills.length === 0) {
-      alert("Por favor, adicione pelo menos uma skill (hard ou soft).");
-      return;
-    }
-
-    dispatch("submit", {
-      area: area.trim(),
-      position: position.trim(),
-      seniority,
-      hardSkills,
-      softSkills,
-      additionalInfo: additionalInfo.trim(),
-    });
-  }
+  // Emite evento de mudança contínuo para permitir análise externa com único botão
+  $: dispatch("change", {
+    area: area.trim(),
+    position: position.trim(),
+    seniority,
+    hardSkills,
+    softSkills,
+    additionalInfo: additionalInfo.trim(),
+  });
 </script>
 
-<form on:submit|preventDefault={handleSubmit} class="flex flex-col gap-6">
+<div class="flex flex-col gap-6">
   <div class="flex flex-col gap-1">
     <h3 class="text-lg font-semibold text-neutral-900 dark:text-white">
       Configuração Estruturada da Vaga
@@ -148,12 +136,5 @@
     ></textarea>
   </div>
 
-  <div class="flex justify-end pt-2">
-    <button
-      type="submit"
-      class="relative inline-flex items-center justify-center rounded-lg bg-linear-to-r from-primary-500 to-primary-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-300 dark:focus:ring-primary-700"
-    >
-      Buscar Candidatos
-    </button>
-  </div>
-</form>
+  <!-- Botão removido: análise unificada acionada externamente -->
+</div>
