@@ -56,41 +56,59 @@
   }
 </script>
 
-<form on:submit|preventDefault={handleSubmit} class="job-form">
-  <div class="form-header">
-    <h3>Configuração Estruturada da Vaga</h3>
-    <p class="subtitle">Defina diretamente os requisitos da vaga</p>
+<form on:submit|preventDefault={handleSubmit} class="flex flex-col gap-6">
+  <div class="flex flex-col gap-1">
+    <h3 class="text-lg font-semibold text-neutral-900 dark:text-white">
+      Configuração Estruturada da Vaga
+    </h3>
+    <p class="text-sm text-neutral-600 dark:text-neutral-400">
+      Defina diretamente os requisitos da vaga
+    </p>
   </div>
 
-  <div class="form-grid">
-    <!-- Área -->
-    <div class="form-field">
-      <label for="area">Área *</label>
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="flex flex-col gap-2">
+      <label
+        for="area"
+        class="text-sm font-medium text-neutral-700 dark:text-neutral-300"
+        >Área *</label
+      >
       <input
         id="area"
         type="text"
         bind:value={area}
         placeholder="Ex: Tecnologia, Marketing, Vendas..."
         required
+        class="rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 px-3 py-2 text-sm outline-none text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-800 transition"
       />
     </div>
-
-    <!-- Cargo -->
-    <div class="form-field">
-      <label for="position">Cargo *</label>
+    <div class="flex flex-col gap-2">
+      <label
+        for="position"
+        class="text-sm font-medium text-neutral-700 dark:text-neutral-300"
+        >Cargo *</label
+      >
       <input
         id="position"
         type="text"
         bind:value={position}
         placeholder="Ex: Desenvolvedor Backend, Analista de Dados..."
         required
+        class="rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 px-3 py-2 text-sm outline-none text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-800 transition"
       />
     </div>
-
-    <!-- Senioridade -->
-    <div class="form-field">
-      <label for="seniority">Senioridade *</label>
-      <select id="seniority" bind:value={seniority} required>
+    <div class="flex flex-col gap-2">
+      <label
+        for="seniority"
+        class="text-sm font-medium text-neutral-700 dark:text-neutral-300"
+        >Senioridade *</label
+      >
+      <select
+        id="seniority"
+        bind:value={seniority}
+        required
+        class="rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 px-3 py-2 text-sm outline-none text-neutral-900 dark:text-white focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-800 transition"
+      >
         {#each seniorityOptions as option}
           <option value={option.value}>{option.label}</option>
         {/each}
@@ -98,15 +116,12 @@
     </div>
   </div>
 
-  <!-- Hard Skills -->
   <SkillSelector
     label="Hard Skills *"
     bind:selected={hardSkills}
     suggestions={hardSkillsSuggestions}
     placeholder="Digite para buscar tecnologias, ferramentas..."
   />
-
-  <!-- Soft Skills -->
   <SkillSelector
     label="Soft Skills"
     bind:selected={softSkills}
@@ -114,127 +129,31 @@
     placeholder="Digite para buscar competências comportamentais..."
   />
 
-  <!-- Informações Adicionais -->
-  <div class="form-field">
-    <label for="additional-info">
-      Informações Adicionais
-      <span class="optional">(opcional)</span>
+  <div class="flex flex-col gap-2">
+    <label
+      for="additional-info"
+      class="text-sm font-medium text-neutral-700 dark:text-neutral-300"
+    >
+      Informações Adicionais <span
+        class="font-normal text-neutral-400 dark:text-neutral-500"
+        >(opcional)</span
+      >
     </label>
     <textarea
       id="additional-info"
       bind:value={additionalInfo}
       placeholder="Ex: Cultura da empresa, benefícios oferecidos, diferenciais desejados..."
       rows="4"
+      class="rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 px-3 py-2 text-sm outline-none text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-800 transition resize-y min-h-20"
     ></textarea>
   </div>
 
-  <div class="form-actions">
-    <button type="submit" class="submit-btn">Buscar Candidatos</button>
+  <div class="flex justify-end pt-2">
+    <button
+      type="submit"
+      class="relative inline-flex items-center justify-center rounded-lg bg-linear-to-r from-primary-500 to-primary-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-300 dark:focus:ring-primary-700"
+    >
+      Buscar Candidatos
+    </button>
   </div>
 </form>
-
-<style>
-  .job-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .form-header {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  h3 {
-    margin: 0;
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #111827;
-  }
-
-  .subtitle {
-    margin: 0;
-    font-size: 0.875rem;
-    color: #6b7280;
-  }
-
-  .form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-  }
-
-  .form-field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #374151;
-  }
-
-  .optional {
-    font-weight: 400;
-    color: #9ca3af;
-  }
-
-  input,
-  select,
-  textarea {
-    padding: 0.625rem 0.875rem;
-    border: 1px solid #d1d5db;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    font-family: inherit;
-    transition: all 0.2s;
-  }
-
-  input:focus,
-  select:focus,
-  textarea:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  }
-
-  select {
-    cursor: pointer;
-    background-color: white;
-  }
-
-  textarea {
-    resize: vertical;
-    min-height: 80px;
-  }
-
-  .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    padding-top: 0.5rem;
-  }
-
-  .submit-btn {
-    padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: white;
-    border: none;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .submit-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-  }
-
-  .submit-btn:active {
-    transform: translateY(0);
-  }
-</style>
