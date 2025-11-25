@@ -1,5 +1,12 @@
 """Teste rápido do ExplainabilityEngine com LLM real."""
 
+import sys
+from pathlib import Path
+
+# Adiciona o diretório raiz do projeto ao sys.path
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
 from dotenv import load_dotenv
 import os
 

@@ -17,35 +17,79 @@ from src.llm.utils import get_llm_logger
 
 
 class ExplainabilityEngine:
+    """Responsável por gerar explicações das análises.
+
+    Organização interna:
+    - Constantes de thresholds e modelos
+    - Helpers privados para formatar partes do prompt
+    - Métodos públicos: explain_candidate / explain_all_candidates
+    """
+
+    HARD_STRONG_THRESHOLD = 3.0
+    HARD_OK_THRESHOLD = 2.0
+    RECOMMENDATION_STRONG = 7
+    RECOMMENDATION_RECOMMENDED = 6.5
+    RECOMMENDATION_RESSALVAS = 4.5
+
+    DEFAULT_PROVIDER = "gemini"
+    DEFAULT_MODEL = "gemini-2.5-flash-lite"
+    DEFAULT_BATCH_MODEL = "gemini-2.0-flash-exp"
+
     def __init__(self, llm_client: Optional[LLMClient] = None) -> None:
         self.llm_client = llm_client
         self.logger = get_llm_logger()
+
+    # ------------------------ Helpers internos ------------------------
+    def _format_skills_list(self, skills, empty_placeholder: str) -> str:
+        names = sorted({s.name for s in skills})
+        return ", ".join(names) if names else empty_placeholder
+
+    def _extract_score_breakdown(self, candidate: Candidate) -> dict:
+        breakdown = candidate.score_breakdown or {}
+        return {
+            "hard_score": breakdown.get("hard_skills", 0),
+            "soft_score": breakdown.get("soft_skills", 0),
+            "exp_score": breakdown.get("experience", 0),
+            "edu_score": breakdown.get("education", 0),
+            "hard_detail": breakdown.get("hard_skills_detail", {}),
+        }
+
+    def _compute_top_skills(self, hard_detail: dict, limit: int = 5) -> str:
+        if not hard_detail:
+            return "Nenhuma skill com peso alto detectada"
+        top = sorted(hard_detail.items(), key=lambda x: x[1], reverse=True)[:limit]
+        return (
+            ", ".join(f"{k} ({v:.1f} pts)" for k, v in top)
+            if top
+            else "Nenhuma skill com peso alto detectada"
+        )
+
+    def _recommendation_label(self, score: float) -> str:
+        if score >= self.RECOMMENDATION_STRONG:
+            return "Fortemente recomendado"
+        if score >= self.RECOMMENDATION_RECOMMENDED:
+            return "Recomendado"
+        if score >= self.RECOMMENDATION_RESSALVAS:
+            return "Recomendado com ressalvas"
+        return "Não recomendado"
 
     def _build_explanation_prompt(
         self, candidate: Candidate, job: JobProfile, position: Optional[int] = None
     ) -> str:
         """Constrói prompt para geração de justificativa."""
-        # Hard skills formatadas
-        hard_skills_list = ", ".join(sorted({s.name for s in candidate.hard_skills}))
-        if not hard_skills_list:
-            hard_skills_list = "Nenhuma hard skill detectada"
+        hard_skills_list = self._format_skills_list(
+            candidate.hard_skills, "Nenhuma hard skill detectada"
+        )
+        soft_skills_list = self._format_skills_list(
+            candidate.soft_skills, "Nenhuma soft skill detectada"
+        )
 
-        # Soft skills formatadas
-        soft_skills_list = ", ".join(sorted({s.name for s in candidate.soft_skills}))
-        if not soft_skills_list:
-            soft_skills_list = "Nenhuma soft skill detectada"
-
-        # Breakdown
-        breakdown = candidate.score_breakdown or {}
-        hard_score = breakdown.get("hard_skills", 0)
-        soft_score = breakdown.get("soft_skills", 0)
-        exp_score = breakdown.get("experience", 0)
-        edu_score = breakdown.get("education", 0)
-
-        # Top 5 hard skills por peso
-        hard_detail = breakdown.get("hard_skills_detail", {})
-        top_skills = sorted(hard_detail.items(), key=lambda x: x[1], reverse=True)[:5]
-        top_skills_str = ", ".join(f"{k} ({v:.1f} pts)" for k, v in top_skills)
+        sb = self._extract_score_breakdown(candidate)
+        hard_score = sb["hard_score"]
+        soft_score = sb["soft_score"]
+        exp_score = sb["exp_score"]
+        edu_score = sb["edu_score"]
+        top_skills_str = self._compute_top_skills(sb["hard_detail"], limit=5)
 
         position_text = f"{position}ª posição no ranking" if position else "ranking"
 
@@ -96,8 +140,6 @@ Mantenha tom profissional, objetivo e respeitoso. Seja conciso e direto."""
     ) -> str:
         """Gera justificativa para um candidato usando LLM."""
         if not self.llm_client:
-            print("LLM Client não configurado, usando fallback heurístico.")
-            # Fallback: justificativa baseada em heurísticas
             return self._fallback_explanation(candidate, job, position)
 
         prompt = self._build_explanation_prompt(candidate, job, position)
@@ -149,6 +191,7 @@ Mantenha tom profissional, objetivo e respeitoso. Seja conciso e direto."""
                 error=str(e),
                 metadata={"candidate": candidate.name},
             )
+            print(f"Erro ao gerar explicação LLM: {e}")
             # Fallback em caso de erro
             return self._fallback_explanation(candidate, job, position)
 
@@ -156,47 +199,46 @@ Mantenha tom profissional, objetivo e respeitoso. Seja conciso e direto."""
         self, candidate: Candidate, job: JobProfile, position: Optional[int] = None
     ) -> str:
         """Gera explicação baseada em heurísticas quando LLM não disponível."""
-        breakdown = candidate.score_breakdown or {}
-        hard_score = breakdown.get("hard_skills", 0)
-        soft_score = breakdown.get("soft_skills", 0)
-
+        sb = self._extract_score_breakdown(candidate)
+        hard_score = sb["hard_score"]
+        soft_score = sb["soft_score"]
         hard_count = len(candidate.hard_skills)
         soft_count = len(candidate.soft_skills)
 
         position_text = f"está em {position}ª posição no ranking e" if position else ""
+        explanation_parts = [
+            f"{candidate.name} {position_text} obteve {candidate.score:.1f} pontos na análise.",
+        ]
 
-        explanation = f"{candidate.name} {position_text} obteve {candidate.score:.1f} pontos na análise.\n\n"
-
-        if hard_score > 3.0:
-            explanation += f"O candidato demonstra forte perfil técnico com {hard_count} hard skills identificadas, "
-            explanation += f"resultando em {hard_score:.1f} pontos nesta categoria. "
-        elif hard_score > 2.0:
-            explanation += f"O candidato possui um perfil técnico adequado com {hard_count} hard skills, "
-            explanation += f"totalizando {hard_score:.1f} pontos. "
+        if hard_score > self.HARD_STRONG_THRESHOLD:
+            explanation_parts.append(
+                f"Demonstra forte perfil técnico com {hard_count} hard skills identificadas ("
+                f"{hard_score:.1f} pts)."
+            )
+        elif hard_score > self.HARD_OK_THRESHOLD:
+            explanation_parts.append(
+                f"Perfil técnico adequado com {hard_count} hard skills ("
+                f"{hard_score:.1f} pts)."
+            )
         else:
-            explanation += f"O candidato apresenta perfil técnico limitado ({hard_count} skills, {hard_score:.1f} pts). "
+            explanation_parts.append(
+                f"Perfil técnico limitado ({hard_count} skills, {hard_score:.1f} pts)."
+            )
 
         if soft_count > 0:
-            explanation += f"Em termos de competências comportamentais, foram identificadas {soft_count} soft skills ({soft_score:.1f} pts).\n\n"
-        else:
-            explanation += (
-                "Não foram identificadas soft skills explícitas no currículo.\n\n"
-            )
-
-        # Recomendação
-        if candidate.score >= 4.0:
-            explanation += "Recomendação: Fortemente recomendado para a vaga."
-        elif candidate.score >= 3.0:
-            explanation += "Recomendação: Recomendado para a vaga."
-        elif candidate.score >= 2.0:
-            explanation += (
-                "Recomendação: Recomendado com ressalvas - verificar fit específico."
+            explanation_parts.append(
+                f"Identificadas {soft_count} soft skills (" f"{soft_score:.1f} pts)."
             )
         else:
-            explanation += "Recomendação: Não recomendado para esta vaga específica."
+            explanation_parts.append(
+                "Não foram identificadas soft skills explícitas no currículo."
+            )
 
-        candidate.explanation = explanation
-        return explanation
+        recommendation = self._recommendation_label(candidate.score)
+        explanation_parts.append(f"Recomendação: {recommendation} para a vaga.")
+
+        candidate.explanation = "\n\n".join(explanation_parts)
+        return candidate.explanation
 
     def explain_all_candidates(
         self,
