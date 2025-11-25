@@ -14,8 +14,8 @@ O objetivo é construir um analisador de currículos capaz de identificar *hard 
 O projeto integra conceitos de **Agentes Inteligentes (AIMA)**, **LLMs**, **RAG**, **Agentic Workflows** e **Large Reasoning Models (LRMs)**, aliados à prática de **programação em pares com um LLM**.
 
 > [!NOTE]
-> Link para o relatório final do projeto: [Google Docs](https://docs.google.com/document/d/1WY4-HdBLApxPvWanyXC5nFafT-aAXxaWd062ypdg3Ds/edit?usp=sharing)  
-> Link para o vídeo de apresentação do projeto: [YouTube](https://youtu.be/)
+> Link para o **relatório final** do projeto: [Google Docs](https://docs.google.com/document/d/1WY4-HdBLApxPvWanyXC5nFafT-aAXxaWd062ypdg3Ds/edit?usp=sharing)  
+> Link para o **vídeo de apresentação** do projeto: [YouTube](https://youtu.be/KV6bny8ggJQ)
 
 ---
 
